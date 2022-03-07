@@ -1,19 +1,22 @@
 package main
 
 import (
-	"fmt"
+	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
 )
-func handler(w http.ResponseWriter, r *http.Request) {
-	target := "欢迎使用AllSmile管理！"
-	fmt.Fprintf(w, "%s!\n", target)
+
+func Indexhandler(c *gin.Context) {
+	c.JSON(http.StatusOK,gin.H{
+		"Msg" : "HelloWorld",
+	})
+}
+
+func Start()  {
+	r := gin.Default()
+	r.GET("/index",Indexhandler)
+	r.Run(":8080")
 }
 
 func main() {
-	http.HandleFunc("/", handler)
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "80"
-	}
+	Start()
 }
