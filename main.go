@@ -6,6 +6,7 @@ import (
 )
 
 func Indexhandler(c *gin.Context) {
+
 	c.JSON(http.StatusOK,gin.H{
 		"Msg" : "HelloWorld",
 	})
@@ -13,6 +14,7 @@ func Indexhandler(c *gin.Context) {
 
 func Start()  {
 	r := gin.Default()
+	r.SetTrustedProxies(nil)
 	r.GET("/index",Indexhandler)
 	r.Run(":8080")
 }
