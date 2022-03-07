@@ -1,24 +1,20 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
+	"fmt"
+	"log"
 	"net/http"
+	"wxcloudrun-golang/db"
+	"wxcloudrun-golang/service"
 )
 
-func Indexhandler(c *gin.Context) {
-
-	c.JSON(http.StatusOK,gin.H{
-		"Msg" : "HelloWorld",
-	})
-}
-
-func Start()  {
-	r := gin.Default()
-	r.SetTrustedProxies(nil)
-	r.GET("/index",Indexhandler)
-	r.Run(":8080")
-}
-
 func main() {
-	Start()
+	if err := db.Init(); err != nil {
+		panic(fmt.Sprintf("mysql init failed with %+v", err))
+	}
+
+	http.HandleFunc("/", service.IndexHandler)
+	http.HandleFunc("/api/count", service.CounterHandler)
+
+	log.Fatal(http.ListenAndServe(":80", nil))
 }
