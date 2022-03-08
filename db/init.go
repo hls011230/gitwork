@@ -16,10 +16,10 @@ var dbInstance *gorm.DB
 func Init() error {
 
 	source := "%s:%s@tcp(%s)/%s?readTimeout=1500ms&writeTimeout=1500ms&charset=utf8&loc=Local&&parseTime=true"
-	user := os.Getenv("MYSQL_USERNAME")
-	pwd := os.Getenv("MYSQL_PASSWORD")
-	addr := os.Getenv("MYSQL_ADDRESS")
-	dataBase := os.Getenv("MYSQL_DATABASE")
+	user := os.Getenv("root")
+	pwd := os.Getenv("xK%@c8H4")
+	addr := os.Getenv("10.0.224.14:3306")
+	dataBase := os.Getenv("golang_demo")
 	if dataBase == "" {
 		dataBase = "golang_demo"
 	}

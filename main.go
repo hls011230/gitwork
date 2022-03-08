@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"wxcloudrun-golang/db"
@@ -9,8 +8,9 @@ import (
 )
 
 func main() {
-	if err := db.Init(); err != nil {
-		panic(fmt.Sprintf("mysql init failed with %+v", err))
+	err := db.Init()
+	if err!=nil {
+		panic(err)
 	}
 
 	http.HandleFunc("/", service.IndexHandler)
