@@ -11,6 +11,7 @@ func main() {
 	//	panic(err)
 	//}
 	r := gin.Default()
+	r.Static("/static", "./static")
 	r.SetTrustedProxies([]string{"169.254.0.42"})
 	r.GET("/index" ,func(c *gin.Context){
 		c.JSON(http.StatusOK,gin.H{
