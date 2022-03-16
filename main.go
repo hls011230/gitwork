@@ -18,7 +18,7 @@ func main() {
 			"Msg" : "123456" ,
 		})
 	})
-	r.Run(":80")
+	r.Run(":8080")
 	//http.HandleFunc("/", service.IndexHandler)
 	//http.HandleFunc("/api/count", service.CounterHandler)
 	//
