@@ -12,11 +12,14 @@ COPY . /app/
 
 FROM gcc:latest
 
+WORKDIR /app
+
 RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 RUN go mod init A11Smile
 RUN go mod tidy
 
+WORKDIR /app
 # 执行代码编译命令。操作系统参数为linux，编译后的二进制产物命名为main，并存放在当前目录下。
 RUN GOOS=linux go build -o main .
 
