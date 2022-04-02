@@ -6,7 +6,7 @@ import "github.com/gin-gonic/gin"
 var Contract_address string
 
 // 启动服务
-func Start(addr, contract_address string) (err error) {
+func Start(contract_address string) (err error) {
 	r := gin.Default()
 
 	r.SetTrustedProxies([]string{"169.254.0.42"})
@@ -45,6 +45,6 @@ func Start(addr, contract_address string) (err error) {
 		gainer.POST("/")
 	}
 
-	err = r.Run(addr)
+	err = r.Run(":80")
 	return err
 }

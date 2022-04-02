@@ -3,7 +3,6 @@ package main
 import (
 	"A11Smile/db"
 	"A11Smile/service"
-	"fmt"
 )
 
 // 程序的入口
@@ -23,5 +22,5 @@ func main() {
 	//}
 
 	// 初始化web服务
-	service.Start(fmt.Sprintf("127.0.0.1:80"), "")
+	service.Start("")
 }
