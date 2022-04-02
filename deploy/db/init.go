@@ -21,7 +21,7 @@ func Init() error {
 	addr := os.Getenv("MYSQL_ADDRESS")
 	dataBase := os.Getenv("MYSQL_DATABASE")
 	if dataBase == "" {
-		dataBase = "golang_demo"
+		dataBase = "a11smile"
 	}
 	source = fmt.Sprintf(source, user, pwd, addr, dataBase)
 	fmt.Println("start init mysql with ", source)
@@ -54,7 +54,7 @@ func Init() error {
 	return nil
 }
 
-// Get ...
+// 获取数据库对象
 func Get() *gorm.DB {
 	return dbInstance
 }

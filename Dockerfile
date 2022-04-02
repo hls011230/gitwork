@@ -8,6 +8,8 @@ WORKDIR /app
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
 COPY . /app/
 
+WORKDIR /app/deploy
+
 # 执行代码编译命令。操作系统参数为linux，编译后的二进制产物命名为main，并存放在当前目录下。
 RUN GOOS=linux go build -o main .
 
@@ -15,12 +17,7 @@ RUN GOOS=linux go build -o main .
 FROM alpine:3.13
 
 # 指定运行时的工作目录
-WORKDIR /app
-
-# 将构建产物/app/main拷贝到运行时的工作目录中
-COPY --from=builder /app/main /app/index.html  /app/
+WORKDIR /app/deploy
 
 # 执行启动命令
-CMD ["/app/main"]
-
-ENTRYPOINT ["/app/static"]
+CMD ["/app/deploy/main config.json"]
