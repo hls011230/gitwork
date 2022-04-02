@@ -5,15 +5,17 @@ FROM golang:1.17.1-alpine3.14 as builder
 
 RUN echo $PWD
 # 指定构建过程中的工作目录
-WORKDIR /go
-RUN echo $LS
+WORKDIR /app
+
 
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
-COPY /go /app/
+COPY . /app/
 
 FROM gcc:latest
 
 WORKDIR /app
+RUN echo $LS
+RUN echo $LL
 
 RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
