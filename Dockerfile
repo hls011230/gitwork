@@ -14,4 +14,4 @@ WORKDIR /app
 
 COPY --from=builder /app/main /app/config.json /app/
 
-CMD ["/app/main"]
+CMD ["/app/main ./config.json"]
