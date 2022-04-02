@@ -6,12 +6,11 @@ RUN go env -w GO111MODULE=on
 RUN go env -w GOPROXY=https://goproxy.cn,direct
 
 # 指定构建过程中的工作目录
-WORKDIR /app
+WORKDIR /app/deploy
 
 # 将当前目录（dockerfile所在目录）下所有文件都拷贝到工作目录下
 COPY . /app/
 
-RUN cd /app/deploy
 # 执行代码编译命令。操作系统参数为linux，编译后的二进制产物命名为main，并存放在当前目录下。
 RUN GOOS=linux go build -o main .
 
@@ -21,7 +20,7 @@ FROM alpine:3.13
 # 指定运行时的工作目录
 WORKDIR /app
 
-COPY --from=builder /app/deploy/main /app/
+COPY --from=builder /app/main /app/
 
 # 执行启动命令
 CMD ["/app/main /app/deploy/config.json"]
