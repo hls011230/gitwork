@@ -22,7 +22,7 @@ RUN go mod init A11Smile
 RUN echo $PWD
 
 WORKDIR /app
-RUN echo ls
+RUN echo $ls
 # 执行代码编译命令。操作系统参数为linux，编译后的二进制产物命名为main，并存放在当前目录下。
 RUN GOOS=linux go build -o main .
 
