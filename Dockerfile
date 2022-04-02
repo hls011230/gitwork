@@ -12,6 +12,6 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /app/main .
+COPY --from=builder /app/main /app/config.json /app/
 
 CMD ["/app/main /app/config.json"]
