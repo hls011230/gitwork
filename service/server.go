@@ -15,7 +15,7 @@ func Start(contract_address string) (err error) {
 	Contract_address = contract_address
 
 	// 初始化静态文件夹
-	r.Static("static", "../static")
+	r.Static("static", "7072-prod-9gy59jvo10e0946b-1310014865/a11smile")
 
 	// 注册
 	register := r.Group("/register")
