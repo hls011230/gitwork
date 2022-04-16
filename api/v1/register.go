@@ -12,7 +12,7 @@ import (
 
 func Register(user *model.User) error {
 	key := keystore.NewKeyStore("keystore", keystore.StandardScryptN, keystore.StandardScryptP)
-	passwd := user.Password
+	passwd := user.Passwd
 
 	//创建一个钱包用户
 	create_account, err := key.NewAccount(passwd)
@@ -20,6 +20,7 @@ func Register(user *model.User) error {
 		return err
 	}
 	tracer := fmt.Sprintf("%v", create_account.URL)
+	fmt.Println(tracer)
 	comma := strings.Index(tracer, "/")
 	pos := strings.Index(tracer[comma:], "keystore")
 
