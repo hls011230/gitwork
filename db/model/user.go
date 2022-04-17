@@ -23,6 +23,6 @@ type UserAuthentication struct {
 
 // 登录用户模型
 type LoginUser struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email  string `json:"email"`
+	Passwd string `json:"passwd"`
 }
