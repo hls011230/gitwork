@@ -1,13 +1,10 @@
 package v1
 
 import (
-	"A11Smile/db"
 	"A11Smile/db/model"
-	"fmt"
+	"log"
 
 	"github.com/ethereum/go-ethereum/accounts/keystore"
-
-	"strings"
 )
 
 func Register(user *model.User) error {
@@ -19,21 +16,7 @@ func Register(user *model.User) error {
 	if err != nil {
 		return err
 	}
-	tracer := fmt.Sprintf("%v", create_account.URL)
-	fmt.Println(tracer)
-	comma := strings.Index(tracer, "/")
-	pos := strings.Index(tracer[comma:], "keystore")
-
-	//完善用户钱包信息
-	user.Key_store = tracer[comma+pos:]
-	user.Block_address = fmt.Sprintf("%v", create_account.Address)
-
-	// 引入数据库
-	cli := db.Get()
-	err = cli.Table("users").Save(user).Error
-	if err != nil {
-		return err
-	}
-
+	log.Fatal(create_account.Address)
+	log.Fatal(create_account.URL)
 	return nil
 }
