@@ -2,16 +2,17 @@ package model
 
 // 定义数据库访问模型
 type User struct {
-	Id            int    `json:"id" gorm:"column:id`
-	Email         string `json:"email" gorm:"column:email"`
-	Uname         string `json:"uname" gorm:"column:uname"`
-	Passwd        string `json:"passwd" gorm:"column:passwd"`
-	Block_address string `json:"block_address" gorm:"column:block_address"`
-	Key_store     string `json:"key_store" gorm:"column:key_store"`
+	Id           int    `json:"id" gorm:"column:id"`
+	Email        string `json:"email" gorm:"column:email"`
+	Uname        string `json:"uname" gorm:"column:uname"`
+	Passwd       string `json:"passwd" gorm:"column:passwd"`
+	Resume       string `json:"resume" gorm:"column:resume"`
+	BlockAddress string `json:"block_address" gorm:"column:block_address"`
+	PrivateKey   string `json:"private_key" gorm:"column:private_key"`
 }
 
 // 定义用户真实身份模型
-type User_authentication struct {
+type UserAuthentication struct {
 	Id          int    `json:"id" gorm:"column:id"`
 	Uid         int    `json:"uid" gorm:"column:uid"`
 	Name        string `json:"name" gorm:"column:name"`
