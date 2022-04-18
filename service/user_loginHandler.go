@@ -23,8 +23,8 @@ func user_loginHandler(c *gin.Context) {
 	}
 
 	serializer.RespOK(c, struct {
-		uid int `json:"uid"`
+		Uid int `json:"uid"`
 	}{
-		uid: UserId,
+		Uid: UserId,
 	})
 }
