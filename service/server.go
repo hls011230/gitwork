@@ -6,14 +6,11 @@ import "github.com/gin-gonic/gin"
 var Contract_address string
 
 // 启动服务
-func Start(contract_address string) (err error) {
+func Start(contract_address string) {
 	r := gin.Default()
 
 	// 初始化合约地址
 	Contract_address = contract_address
-
-	// 初始化静态文件夹
-	r.Static("static", "../static")
 
 	// 注册
 	register := r.Group("/register")
@@ -52,6 +49,6 @@ func Start(contract_address string) (err error) {
 		gainer.POST("/")
 	}
 
-	err = r.Run(":80")
-	return err
+	r.Run(":80")
+
 }
