@@ -4,6 +4,7 @@ import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/serializer"
 	"fmt"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 
@@ -12,6 +13,7 @@ import (
 	"time"
 )
 
+// 身份证识别
 func user_verifyIDCardHandler(c *gin.Context) {
 	// 获取前端传递过来的文件
 	f, err := c.FormFile("uploadIDCard")
@@ -19,6 +21,8 @@ func user_verifyIDCardHandler(c *gin.Context) {
 		serializer.RespError(c, err)
 		return
 	}
+
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 
 	// 处理文件
 	fileExt := strings.ToLower(path.Ext(f.Filename))
@@ -30,7 +34,7 @@ func user_verifyIDCardHandler(c *gin.Context) {
 	// 识别身份证
 	token, _ := v1.GetToken()
 	srcFile, _ := f.Open()
-	err = v1.PostIDCard(srcFile, token)
+	err = v1.PostIDCard(srcFile, token, uid)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
@@ -39,6 +43,7 @@ func user_verifyIDCardHandler(c *gin.Context) {
 	serializer.RespOK(c, "认证成功")
 }
 
+// 医疗信息识别
 func user_readMedicalInformation(c *gin.Context) {
 	// 获取前端传递过来的文件
 	f, err := c.FormFile("readMedicalInformation")
