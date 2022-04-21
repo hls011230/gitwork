@@ -2,15 +2,9 @@ package service
 
 import "github.com/gin-gonic/gin"
 
-// 合约地址
-var Contract_address string
-
 // 启动服务
-func Start(contract_address string) {
+func Start() {
 	r := gin.Default()
-
-	// 初始化合约地址
-	Contract_address = contract_address
 
 	// 注册
 	register := r.Group("/register")
@@ -18,6 +12,12 @@ func Start(contract_address string) {
 		register.POST("/sendEmail", user_register_sendEmailHandler)
 		register.POST("/verifyEmail", user_register_verifyEmailHandler)
 
+	}
+
+	// 登录
+	login := r.Group("/login")
+	{
+		login.POST("/user", user_loginHandler)
 	}
 
 	// 用户（分享者）
@@ -28,13 +28,21 @@ func Start(contract_address string) {
 			register.POST("/", user_registerHandler)
 		}
 
-		login := user.Group("/login")
-		{
-			login.POST("/", user_loginHandler)
-		}
-
 		user.POST("/verifyIDCard", user_verifyIDCardHandler)
 		user.POST("/readMedicalInformation", user_readMedicalInformation)
+
+		user.POST("/editUserName", user_editUserNameHandler)
+		user.POST("/editUserResume", user_editUserResumeHandler)
+		user.POST("/editDataGetData", user_editDataGetDataHandler)
+		user.POST("/editDataGetId", user_editDataGetIdHandler)
+		user.POST("/userSeeData", user_SeeDataHandler)
+		user.POST("/User_AuthenticationSee", User_AuthenticationSeeHandler)
+
+		user.POST("/UploadMedicalInformation", user_UploadMedicalInformation)
+		user.POST("/CheckTheBalance", user_CheckTheBalanceHandler)
+		user.POST("/CheckTheAS", user_CheckTheAS)
+
+		user.POST("/uploadMedicalHistory", user_uploadMedicalHistoryHandler)
 
 	}
 
@@ -44,9 +52,19 @@ func Start(contract_address string) {
 		register = gainer.Group("/register")
 		{
 			register.POST("/verifyBizlicense", gainer_register_verifyBizlicense)
+
 		}
 
+		gainer.POST("/uploadGainer", gainer_uploadGainer)
+		gainer.POST("/ReleaseMedicalInformation", gainer_ReleaseMedicalInformation)
+		gainer.POST("/ReviewAndReward", gainer_ReviewAndReward)
+		gainer.POST("/CheckTheBalance", gainer_CheckTheBalance)
+		gainer.POST("/CheckTheAS", gainer_CheckTheAS)
 		gainer.POST("/")
+		gainer.POST("/editGainerData", gainer_editDataHandler)
+		gainer.POST("/gainerEditDataGetData", gainer_editDataGetDataHandler)
+		gainer.POST("/gainerEditGetId", gainer_editDataGetIdHandler)
+		gainer.POST("/gainerSeeData", gainer_SeeDataHandler)
 	}
 
 	r.Run(":80")
