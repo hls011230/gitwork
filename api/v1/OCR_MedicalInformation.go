@@ -10,7 +10,6 @@ import (
 	"net/http"
 )
 
-
 func PostMedicalInformation(f io.Reader, token model.RespWXToken, uid int) error {
 
 	buf := new(bytes.Buffer)
@@ -23,7 +22,6 @@ func PostMedicalInformation(f io.Reader, token model.RespWXToken, uid int) error
 		fmt.Println("创建form文件失败:", err1)
 		return err1
 	}
-
 
 	_, err := io.Copy(formFile, f)
 	if err != nil {
@@ -48,7 +46,7 @@ func PostMedicalInformation(f io.Reader, token model.RespWXToken, uid int) error
 	err = json.NewDecoder(res.Body).Decode(&medicalInformation)
 	fmt.Println(medicalInformation.Items[0].Text)
 	for k, v := range medicalInformation.Items {
-		fmt.Printf("第%v个值为:%v\n",k,v)
+		fmt.Printf("第%v个值为:%v\n", k, v)
 	}
 	return nil
 }
