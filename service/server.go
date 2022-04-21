@@ -14,18 +14,17 @@ func Start() {
 
 	}
 
-	// 登录
-	login := r.Group("/login")
-	{
-		login.POST("/user", user_loginHandler)
-	}
-
 	// 用户（分享者）
 	user := r.Group("/user")
 	{
 		register = user.Group("/register")
 		{
 			register.POST("/", user_registerHandler)
+		}
+
+		login := user.Group("/login")
+		{
+			login.POST("/", user_loginHandler)
 		}
 
 		user.POST("/verifyIDCard", user_verifyIDCardHandler)
