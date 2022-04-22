@@ -66,7 +66,6 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 	// 在合约中存入用户病历信息
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(user.BlockAddress))
 	if err != nil {
-
 		return err
 	}
 

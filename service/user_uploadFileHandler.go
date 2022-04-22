@@ -12,7 +12,7 @@ import (
 
 func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	// 获取前端传递过来的文件
-	f, err := c.FormFile("uploadMedicalHistory")
+	f, err := c.FormFile("uploadFile")
 	if err != nil {
 		serializer.RespError(c, err)
 		return
@@ -41,7 +41,7 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 
 func user_uploadMedicalExaminationReportHandler(c *gin.Context) {
 	// 获取前端传递过来的文件
-	f, err := c.FormFile("uploadMedicalExaminationReport")
+	f, err := c.FormFile("uploadFile")
 	if err != nil {
 		serializer.RespError(c, err)
 		return
