@@ -28,9 +28,9 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	}
 
 	// 上传用户的病历信息
-	token, _ := v1.GetToken()
+
 	srcFile, _ := f.Open()
-	err = v1.UploadMedicalHistory(srcFile, token, uid, f.Filename)
+	err = v1.UploadMedicalHistory(srcFile, uid, f.Filename)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
