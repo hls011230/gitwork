@@ -20,7 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string) error {
+func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string, token model.RespWXToken) error {
 
 	// 获取用户的Address值
 	DB := db.Get()
@@ -39,7 +39,7 @@ func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string) error {
 
 	reqByte, err := json.Marshal(myReq)
 
-	u := "https://api.weixin.qq.com/tcb/uploadfile"
+	u := fmt.Sprintf("https://api.weixin.qq.com/tcb/uploadfile?access_token=%s", token.Access_token)
 
 	req, err := http.NewRequest("POST", u, bytes.NewReader(reqByte))
 	if err != nil {
@@ -160,9 +160,9 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 
 	reqByte, err := json.Marshal(myReq)
 
-	u := "https://api.weixin.qq.com/tcb/uploadfile?access_token=%s"
+	u := fmt.Sprintf("https://api.weixin.qq.com/tcb/uploadfile?access_token=%s", token.Access_token)
 
-	req, err := http.NewRequest("POST", fmt.Sprintf(u, token.Access_token), bytes.NewReader(reqByte))
+	req, err := http.NewRequest("POST", u, bytes.NewReader(reqByte))
 	if err != nil {
 		return err
 	}
