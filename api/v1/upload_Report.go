@@ -20,7 +20,7 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string, token model.RespWXToken) error {
+func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, fileName string) error {
 
 	// 获取用户的Address值
 	DB := db.Get()
@@ -39,10 +39,12 @@ func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string, token mod
 
 	reqByte, err := json.Marshal(myReq)
 
-	u := fmt.Sprintf("https://api.weixin.qq.com/tcb/uploadfile?access_token=%s", token.Access_token)
+	u := "https://api.weixin.qq.com/tcb/uploadfile?access_token=%s"
 
-	req, err := http.NewRequest("POST", u, bytes.NewReader(reqByte))
+	req, err := http.NewRequest("POST", fmt.Sprintf(u, token.Access_token), bytes.NewReader(reqByte))
 	if err != nil {
+		fmt.Println(1)
+		fmt.Println(err)
 		return err
 	}
 
@@ -53,6 +55,8 @@ func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string, token mod
 
 	resp, err := cli.Do(req)
 	if err != nil {
+		fmt.Println(2)
+		fmt.Println(err)
 		return err
 	}
 
@@ -63,9 +67,11 @@ func UploadMedicalHistory(srcFile io.Reader, uid int, fileName string, token mod
 		return err
 	}
 
+	fmt.Println(respUploadLink)
 	// 在合约中存入用户病历信息
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(user.BlockAddress))
 	if err != nil {
+
 		return err
 	}
 
@@ -160,9 +166,9 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 
 	reqByte, err := json.Marshal(myReq)
 
-	u := fmt.Sprintf("https://api.weixin.qq.com/tcb/uploadfile?access_token=%s", token.Access_token)
+	u := "https://api.weixin.qq.com/tcb/uploadfile?access_token=%s"
 
-	req, err := http.NewRequest("POST", u, bytes.NewReader(reqByte))
+	req, err := http.NewRequest("POST", fmt.Sprintf(u, token.Access_token), bytes.NewReader(reqByte))
 	if err != nil {
 		return err
 	}

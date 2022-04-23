@@ -23,11 +23,17 @@ type UserAuthentication struct {
 
 // 登录用户模型
 type LoginUser struct {
-	Email    string `json:"email"`
+	Email  string `json:"email"`
 	Passwd string `json:"passwd"`
 }
 
-// 使用合约User对象
+type Data struct {
+	Block_address string `json:"block_address"`
+	Birthday      string `json:"birthday"`
+	Resume        string `json:"resume"`
+	Uname         string `json:"uname"`
+	Gender        string `json:"gender"`
+}
 
 type UserWallet struct {
 	BlockAddress string `json:"block_address" gorm:"column:block_address"`

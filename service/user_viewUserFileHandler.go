@@ -2,13 +2,14 @@ package service
 
 import (
 	v1 "A11Smile/api/v1"
+	"A11Smile/db/model"
 	"A11Smile/serializer"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
 
-func user_viewAllMedicalHistory(c *gin.Context) {
+func user_viewAllMedicalHistoryHandler(c *gin.Context) {
 	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 
 	nameArray, err := v1.ViewAllMedicalHistory(uid)
@@ -20,7 +21,7 @@ func user_viewAllMedicalHistory(c *gin.Context) {
 	serializer.RespOK(c, nameArray)
 }
 
-func user_viewAllMedicalExaminationReport(c *gin.Context) {
+func user_viewAllMedicalExaminationReportHandler(c *gin.Context) {
 	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 
 	nameArray, err := v1.ViewAllMedicalExaminationReport(uid)
@@ -30,4 +31,20 @@ func user_viewAllMedicalExaminationReport(c *gin.Context) {
 	}
 
 	serializer.RespOK(c, nameArray)
+}
+
+func user_previewMedicalHistoryHandler(c *gin.Context) {
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+	var userFile model.PostUserFile
+	if err := c.ShouldBindJSON(&userFile); err != nil {
+		serializer.RespError(c, err)
+		return
+	}
+
+	fileLoadPath, err := v1.PreviewMedicalHistory(uid, userFile.FileName)
+	if err != nil {
+		serializer.RespError(c, err)
+		return
+	}
+	serializer.RespOK(c, fileLoadPath)
 }
