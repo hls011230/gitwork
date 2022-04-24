@@ -28,7 +28,7 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 	DB.Table("users").First(&user, "id = ?", uid)
 
 	// 获取文件上传地址
-	path := fmt.Sprintf("a11smile/users/%v/MedicalHistory/%v", user.BlockAddress, fileName)
+	path := fmt.Sprintf("a11smile/users/%v/MedicalHistory/%v.jpg", user.BlockAddress, fileName)
 	myReq := struct {
 		Env  string `json:"env"`
 		Path string `json:"path"`

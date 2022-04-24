@@ -4,12 +4,8 @@ import (
 	"A11Smile/db"
 	"A11Smile/db/model"
 	"A11Smile/eth"
-	"bytes"
 	"context"
-	"encoding/json"
-	"fmt"
 	"math/big"
-	"net/http"
 	"strconv"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -80,38 +76,5 @@ func PreviewMedicalHistory(uid int, fileName string) (string, error) {
 		return "", err
 	}
 
-	// 根据云地址获取下载地址
-	cloudFile := model.UserCloudLink{FileId: fileCloudPath, MaxAge: 720}
-	fileList := []model.UserCloudLink{cloudFile}
-
-	myReq := struct {
-		Env      string                `json:"env"`
-		FileList []model.UserCloudLink `json:"file_list"`
-	}{
-		Env:      "prod-9gy59jvo10e0946b",
-		FileList: fileList,
-	}
-
-	reqByte, err := json.Marshal(myReq)
-
-	token, _ := GetToken()
-	url := "https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=%s"
-	req, err := http.NewRequest("POST", fmt.Sprintf(url, token.Access_token), bytes.NewReader(reqByte))
-	if err != nil {
-		return "", err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	resp, _ := http.DefaultClient.Do(req)
-
-	// Json数据绑定
-	var respWXLoadLink model.RespWXLoadLink
-	err = json.NewDecoder(resp.Body).Decode(&respWXLoadLink)
-	if err != nil {
-		return "", err
-	}
-
-	fmt.Println(respWXLoadLink)
-
-	return "", nil
+	return fileCloudPath, nil
 }

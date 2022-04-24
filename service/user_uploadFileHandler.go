@@ -19,6 +19,7 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	}
 
 	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+	fileName := c.Request.Header.Get("fileName")
 
 	// 处理文件
 	fileExt := strings.ToLower(path.Ext(f.Filename))
@@ -30,7 +31,7 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	// 上传用户的病历信息
 	srcFile, _ := f.Open()
 	token, _ := v1.GetToken()
-	err = v1.UploadMedicalHistory(srcFile, uid, f.Filename, token)
+	err = v1.UploadMedicalHistory(srcFile, token, uid, fileName)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
