@@ -78,3 +78,18 @@ func PreviewMedicalHistory(uid int, fileName string) (string, error) {
 
 	return fileCloudPath, nil
 }
+
+func PreviewMedicalExaminationReport(uid int, fileName string) (string, error) {
+	// 获取对象钱包
+	var user model.UserWallet
+	DB := db.Get()
+	DB.Table("users").First(&user, "id = ?", uid)
+
+	// 查询指定病历文件的云地址
+	fileCloudPath, err := eth.Ins.UserViewMedicalExaminationReport(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(user.BlockAddress)}, fileName)
+	if err != nil {
+		return "", err
+	}
+
+	return fileCloudPath, nil
+}
