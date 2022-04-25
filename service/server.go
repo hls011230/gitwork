@@ -2,10 +2,8 @@ package service
 
 import "github.com/gin-gonic/gin"
 
-
-
 // 启动服务
-func Start()  {
+func Start() {
 	r := gin.Default()
 
 	// 注册
@@ -31,7 +29,6 @@ func Start()  {
 			login.POST("/", user_loginHandler)
 		}
 
-
 		// 用户实名认证
 		user.POST("/verifyIDCard", user_verifyIDCardHandler)
 
@@ -42,22 +39,22 @@ func Start()  {
 		user.POST("/CheckTheAS", user_CheckTheAS)
 
 		// 用户上传病历信息
-		user.POST("/uploadMedicalHistory",user_uploadMedicalHistoryHandler)
+		user.POST("/uploadMedicalHistory", user_uploadMedicalHistoryHandler)
 
 		// 返回用户所有的病历信息
-		user.POST("/viewAllMedicalHistory",user_viewAllMedicalHistoryHandler)
+		user.POST("/viewAllMedicalHistory", user_viewAllMedicalHistoryHandler)
 
 		// 用户预览病历信息
-		user.POST("/previewMedicalHistory",user_previewMedicalHistoryHandler)
+		user.POST("/previewMedicalHistory", user_previewMedicalHistoryHandler)
 
 		// 用户上传体检报告
-		user.POST("/uploadMedicalExaminationReport",user_uploadMedicalExaminationReportHandler)
+		user.POST("/uploadMedicalExaminationReport", user_uploadMedicalExaminationReportHandler)
 
 		// 返回用户所有的体检报告
-		user.POST("/viewAllMedicalExaminationReport",user_viewAllMedicalExaminationReportHandler)
+		user.POST("/viewAllMedicalExaminationReport", user_viewAllMedicalExaminationReportHandler)
 
 		// 用户预览体检报告信息
-		user.POST("/previewMedicalExaminationReport",user_previewMedicalExaminationReportHandler)
+		user.POST("/previewMedicalExaminationReport", user_previewMedicalExaminationReportHandler)
 
 		// 展示用户的个人信息
 		user.POST("/userAuthenticationSee", user_authenticationSeeHandler)
@@ -66,7 +63,7 @@ func Start()  {
 		user.POST("/editUserName", user_editUserNameHandler)
 
 		// 修改用户个人简介
-		user.POST("/editUserResume",user_editUserResumeHandler)
+		user.POST("/editUserResume", user_editUserResumeHandler)
 
 		user.POST("/readMedicalInformation", user_readMedicalInformation)
 		user.POST("/UploadMedicalInformation", user_UploadMedicalInformation)
@@ -91,5 +88,5 @@ func Start()  {
 		gainer.POST("/gainerAauthenticationSee", gainer_authenticationSeeHandler)
 	}
 
-	r.Run(":8080")
+	r.Run(":80")
 }
