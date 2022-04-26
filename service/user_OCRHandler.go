@@ -55,7 +55,6 @@ func user_readMedicalInformation(c *gin.Context) {
 		return
 	}
 
-
 	// 识别医疗信息
 	token, _ := v1.GetToken()
 	srcFile, _ := f.Open()

@@ -3,15 +3,16 @@ package service
 import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/serializer"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-func gainer_CheckTheAS(c *gin.Context)  {
+func gainer_CheckTheAS(c *gin.Context) {
 
-	gid,_ := strconv.Atoi(c.Request.Header.Get("gid"))
+	gid, _ := strconv.Atoi(c.Request.Header.Get("gid"))
 
-	balance,err := v1.Connect6_CheckTheAS(gid)
+	balance, err := v1.Connect6_CheckTheAS(gid, 1)
 
 	if err != nil {
 		serializer.RespError(c, err)

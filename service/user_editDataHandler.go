@@ -4,8 +4,9 @@ import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/db/model"
 	"A11Smile/serializer"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 //修改用户名
@@ -16,7 +17,7 @@ func user_editUserNameHandler(c *gin.Context) {
 		return
 	}
 
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 	user.Id = uid
 
 	if err := v1.EditUserName(user.Id, user.Uname); err != nil {
@@ -37,7 +38,7 @@ func user_editUserResumeHandler(c *gin.Context) {
 		return
 	}
 
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 	user.Id = uid
 
 	if err := v1.EditUserResume(user.Id, user.Resume); err != nil {
@@ -51,14 +52,14 @@ func user_editUserResumeHandler(c *gin.Context) {
 }
 
 //查询资料
-func user_authenticationSeeHandler(c *gin.Context){
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
-	user,err := v1.UserAuthenticationSee(uid)
+func user_authenticationSeeHandler(c *gin.Context) {
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+	user, err := v1.UserAuthenticationSee(uid)
 
 	if err != nil {
-		serializer.RespError(c,err.Error())
+		serializer.RespError(c, err.Error())
 		return
 	}
 
-	serializer.RespOK(c,user)
+	serializer.RespOK(c, user)
 }

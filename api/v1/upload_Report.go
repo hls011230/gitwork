@@ -24,7 +24,7 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 
 	// 获取用户的Address值
 	DB := db.Get()
-	var user model.UserWallet
+	var user model.Wallet
 	DB.Table("users").First(&user, "id = ?", uid)
 
 	// 获取文件上传地址
@@ -150,7 +150,7 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 
 	// 获取用户的Address值
 	DB := db.Get()
-	var user model.UserWallet
+	var user model.Wallet
 	DB.Table("users").First(&user, "id = ?", uid)
 
 	// 获取文件上传地址
@@ -220,7 +220,7 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 	myUploadReq := struct {
 		Key               string    `json:"key" form:"key"`
 		Signature         string    `json:"Signature" form:"Signature"`
-		XCosSecurityToken string    `json:"x-cos-security-token" form:"x_cos_security_token"`
+		XCosSecurityToken string    `json:"x-cos-security_token" form:"x_cos_security_token"`
 		XCosMetaFileid    string    `json:"x-cos-meta-fileid" form:"x_cos_meta_fileid"`
 		File              io.Reader `json:"file" form:"file"`
 	}{

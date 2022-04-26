@@ -7,20 +7,19 @@ import (
 	"A11Smile/eth/gen"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"math"
 	"math/big"
 	"os"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/ethereum/go-ethereum/ethclient"
 )
 
-
-
 //设置征求者
-func Connect1_uploadGainer(gainer *model.Soliciter_solidity) (error,*big.Int,*big.Int,*gen.UploadMedicalrecords) {
+func Connect1_uploadGainer(gainer *model.Soliciter_solidity) (error, *big.Int, *big.Int, *gen.UploadMedicalrecords) {
 	//连接端口
 	client, err := ethclient.Dial("http://127.0.0.1:8547")
 	if err != nil {
@@ -61,25 +60,25 @@ func Connect1_uploadGainer(gainer *model.Soliciter_solidity) (error,*big.Int,*bi
 
 	fmt.Println("opts:", opts)
 	//上传征求者
-	tx1, err := ins.GainerSetDoctor(opts, common.HexToAddress(gainer .Soliciter_))
+	tx1, err := ins.GainerSetDoctor(opts, common.HexToAddress(gainer.Soliciter_))
 	fmt.Println("上传征求者:", tx1)
 	return err, chainID, gasPrice, ins
 }
 
 //用户上传医疗信息
-func Connect2_UploadMedicalInformation(user *model.User_solidity,uid int) error {
-	cliadd :=db.Get()
+func Connect2_UploadMedicalInformation(user *model.User_solidity, uid int) error {
+	cliadd := db.Get()
 	var add string
-	cliadd.Select("select private_key from user where id = ? ",uid).Find(&add)
+	cliadd.Select("select private_key from user where id = ? ", uid).Find(&add)
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(add))
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 
-	clipk :=db.Get()
+	clipk := db.Get()
 	var pk string
-	clipk.Select("select address from user where id = ? ",uid).Find(&pk)
+	clipk.Select("select address from user where id = ? ", uid).Find(&pk)
 
 	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
@@ -97,8 +96,7 @@ func Connect2_UploadMedicalInformation(user *model.User_solidity,uid int) error 
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-
-	_, err = eth.Ins.UserAddMedicalInformation(auth, user.Proute,common.HexToAddress(user.Soliciter_))
+	_, err = eth.Ins.UserAddMedicalInformation(auth, user.Proute, common.HexToAddress(user.Soliciter_))
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -106,21 +104,20 @@ func Connect2_UploadMedicalInformation(user *model.User_solidity,uid int) error 
 	return nil
 }
 
-
 //征求者发布医疗信息
-func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity,gid int) error {
-	cliadd :=db.Get()
+func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity, gid int) error {
+	cliadd := db.Get()
 	var addr string
-	cliadd.Select("select private_key from user where id = ? ",gid).Find(&addr)
+	cliadd.Select("select private_key from user where id = ? ", gid).Find(&addr)
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 
-	clipk :=db.Get()
+	clipk := db.Get()
 	var pk string
-	clipk.Select("select address from user where id = ? ",gid).Find(&pk)
+	clipk.Select("select address from user where id = ? ", gid).Find(&pk)
 
 	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
@@ -138,8 +135,7 @@ func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity,gid int
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-
-	_, err = eth.Ins.GainerAddMedicalInformation(auth, big.NewInt(gainer.Min_),big.NewInt(gainer.Max), gainer.MedicalName,gainer.MedicalNeed,gainer.RequirementDescription)
+	_, err = eth.Ins.GainerAddMedicalInformation(auth, big.NewInt(gainer.Min_), big.NewInt(gainer.Max), gainer.MedicalName, gainer.MedicalNeed, gainer.RequirementDescription)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -148,19 +144,19 @@ func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity,gid int
 }
 
 //征求者审核与奖励
-func Connect4_ReviewAndReward(gainer *model.Soliciter_solidity,gid int) error {
-	cliadd :=db.Get()
+func Connect4_ReviewAndReward(gainer *model.Soliciter_solidity, gid int) error {
+	cliadd := db.Get()
 	var addr string
-	cliadd.Select("select private_key from user where id = ? ",gid).Find(&addr)
+	cliadd.Select("select private_key from user where id = ? ", gid).Find(&addr)
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 
-	clipk :=db.Get()
+	clipk := db.Get()
 	var pk string
-	clipk.Select("select address from user where id = ? ",gid).Find(&pk)
+	clipk.Select("select address from user where id = ? ", gid).Find(&pk)
 
 	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
@@ -178,8 +174,7 @@ func Connect4_ReviewAndReward(gainer *model.Soliciter_solidity,gid int) error {
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-
-	_, err = eth.Ins.GainerWhether(auth,common.HexToAddress(gainer.Soliciter_),gainer.Proute, gainer.Whether,big.NewInt(gainer.Ercnum_))
+	_, err = eth.Ins.GainerWhether(auth, common.HexToAddress(gainer.Soliciter_), gainer.Proute, gainer.Whether, big.NewInt(gainer.Ercnum_))
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -187,58 +182,65 @@ func Connect4_ReviewAndReward(gainer *model.Soliciter_solidity,gid int) error {
 	return err
 }
 
-
 //查询ETH
-func Connect5_CheckTheBalance(uid int) (string,error) {
+func Connect5_CheckTheBalance(id, genre int) (string, error) {
 
 	// 根据uid获取用户的私钥和地址
 	DB := db.Get()
-	var user model.UserWallet
-	DB.Table("users").First(&user,"id = ?",uid)
+	var w model.Wallet
+	if genre == 0 {
+		DB.Table("users").First(&w, "id = ?", id)
+	} else {
+		DB.Table("gainers").First(&w, "id = ?", id)
+	}
 
-	res, err := eth.Ins.GetUserETH(&bind.CallOpts{Context: context.Background(),From: common.HexToAddress(user.BlockAddress)})
+	res, err := eth.Ins.GetUserETH(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
 	if err != nil {
 		log.Fatal(err)
-		return "",err
+		return "", err
 	}
 
 	fBalance := new(big.Float)
 	fBalance.SetString(res.String())
-	balanceEther := new(big.Float).Quo(fBalance,big.NewFloat(math.Pow10(18)))
-	return balanceEther.String(),nil
+	balanceEther := new(big.Float).Quo(fBalance, big.NewFloat(math.Pow10(18)))
+	return balanceEther.String(), nil
 }
 
 //查询AS
-func Connect6_CheckTheAS(uid int) (string,error) {
+func Connect6_CheckTheAS(id, genre int) (string, error) {
 	// 根据uid获取用户的私钥和地址
 	DB := db.Get()
-	var user model.UserWallet
-	DB.Table("users").First(&user,"id = ?",uid)
+	var w model.Wallet
+	if genre == 0 {
+		DB.Table("users").First(&w, "id = ?", id)
+	} else {
+		DB.Table("gainers").First(&w, "id = ?", id)
+	}
 
-	res, err := eth.Ins.GetUserAS(&bind.CallOpts{Context: context.Background(),From: common.HexToAddress(user.BlockAddress)})
+	res, err := eth.Ins.GetUserAS(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
 
 	if err != nil {
 		log.Fatal(err)
-		return "",err
+		return "", err
 	}
 
-	return res.String(),nil
+	return res.String(), nil
 }
 
 //征求者查询ETH
 func Connect5_GainCheckTheBalance(gid int) error {
-	cliadd :=db.Get()
+	cliadd := db.Get()
 	var addr string
-	cliadd.Select("select private_key from user where id = ? ",gid).Find(&addr)
+	cliadd.Select("select private_key from user where id = ? ", gid).Find(&addr)
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 
-	clipk :=db.Get()
+	clipk := db.Get()
 	var pk string
-	clipk.Select("select address from user where id = ? ",gid).Find(&pk)
+	clipk.Select("select address from user where id = ? ", gid).Find(&pk)
 
 	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
@@ -257,13 +259,10 @@ func Connect5_GainCheckTheBalance(gid int) error {
 	auth.Nonce = big.NewInt(int64(nonce))
 
 	ETH, err := eth.Ins.GetUserETH(nil)
-	fmt.Println("剩余ETH",ETH)
+	fmt.Println("剩余ETH", ETH)
 	if err != nil {
 		log.Fatal(err)
 		return err
 	}
 	return err
 }
-
-
-

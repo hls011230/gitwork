@@ -5,10 +5,11 @@ import (
 	"A11Smile/db/model"
 	"A11Smile/serializer"
 	"fmt"
+
 	"github.com/gin-gonic/gin"
 )
 
-func gainer_uploadGainer(c *gin.Context)() {
+func gainer_uploadGainer(c *gin.Context) {
 	var upGainer model.Soliciter_solidity
 	if err := c.ShouldBind(&upGainer); err != nil {
 		serializer.RespError(c, err)

@@ -14,14 +14,14 @@ func GainerEditData(gid int, resume string) (err error) {
 }
 
 //查询企业信息
-func GainerAuthenticationSee(id int) interface{}{
+func GainerAuthenticationSee(id int) interface{} {
 	gainer := struct {
 		EnterpriseName string `json:"enterprise_name"`
 		Block_address  string `json:"block_address"`
 		Resume         string `json:"resume"`
 	}{}
 	DB := db.Get()
-	DB.Table("gainers").Select("gainer_authentication.enterprise_name,gainers.block_address,gainers.resume").Joins("left join gainer_authentication on gainer_authentication.gid = gainers.id where gainers.id = ?",id).Scan(&gainer)
+	DB.Table("gainers").Select("gainer_authentication.enterprise_name,gainers.block_address,gainers.resume").Joins("left join gainer_authentication on gainer_authentication.gid = gainers.id where gainers.id = ?", id).Scan(&gainer)
 
 	return gainer
 }

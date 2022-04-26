@@ -18,7 +18,7 @@ import (
 
 func ViewAllMedicalHistory(uid int) ([]string, error) {
 	DB := db.Get()
-	var user model.UserWallet
+	var user model.Wallet
 	DB.Table("users").First(&user, "id = ?", uid)
 
 	var nameArray []string
@@ -44,7 +44,7 @@ func ViewAllMedicalHistory(uid int) ([]string, error) {
 
 func ViewAllMedicalExaminationReport(uid int) ([]string, error) {
 	DB := db.Get()
-	var user model.UserWallet
+	var user model.Wallet
 	DB.Table("users").First(&user, "id = ?", uid)
 
 	var nameArray []string
@@ -70,7 +70,7 @@ func ViewAllMedicalExaminationReport(uid int) ([]string, error) {
 
 func PreviewMedicalHistory(uid int, fileName string) (string, error) {
 	// 获取对象钱包
-	var user model.UserWallet
+	var user model.Wallet
 	DB := db.Get()
 	DB.Table("users").First(&user, "id = ?", uid)
 
@@ -116,7 +116,7 @@ func PreviewMedicalHistory(uid int, fileName string) (string, error) {
 
 func PreviewMedicalExaminationReport(uid int, fileName string) (string, error) {
 	// 获取对象钱包
-	var user model.UserWallet
+	var user model.Wallet
 	DB := db.Get()
 	DB.Table("users").First(&user, "id = ?", uid)
 
