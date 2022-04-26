@@ -58,7 +58,7 @@ func PostBizlicense(f io.Reader, token model.RespWXToken) (string, error) {
 
 	// 保存至数据库
 	cli := db.Get()
-	cli.Exec("insert into gainer_authentication (reg_num , serial , enterprise_name) values (?,?,?) ", gainer_authentication.RegNum, gainer_authentication.Serial, gainer_authentication.EnterpriseName)
+	cli.Exec("insert into gainer_authentication (reg_num , address , enterprise_name) values (?,?,?) ", gainer_authentication.RegNum, gainer_authentication.Address, gainer_authentication.EnterpriseName)
 	var gid string
 	cli.Raw("select id from gainer_authentication where enterprise_name = ?", gainer_authentication.EnterpriseName).Find(&gid)
 
