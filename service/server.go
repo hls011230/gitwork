@@ -75,7 +75,6 @@ func Start() {
 		register = gainer.Group("/register")
 		{
 			register.POST("/verifyBizlicense", gainer_register_verifyBizlicense)
-
 		}
 
 		gainer.POST("/uploadGainer", gainer_uploadGainer)
