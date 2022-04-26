@@ -93,7 +93,11 @@ func Start() {
 		gainer.POST("/CheckTheAS", gainer_CheckTheAS)
 
 		gainer.POST("/")
+
+		// 修改征求者个人简介
 		gainer.POST("/gainerEdit", gainer_editDataHandler)
+
+		// 查看征求者个人信息
 		gainer.POST("/gainerAauthenticationSee", gainer_authenticationSeeHandler)
 	}
 
