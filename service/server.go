@@ -88,6 +88,9 @@ func Start() {
 			register.POST("/", gainer_registerHandler)
 		}
 
+		// 征求者登录
+		gainer.POST("/login", gainer_loginHandler)
+
 		//gainer.POST("/uploadGainer", gainer_uploadGainer)
 
 		// 征求者发布征求信息
