@@ -188,16 +188,16 @@
 		"type": "event"
 	},
 	{
-		"inputs": [
+		"inputs": [],
+		"name": "A11Smile1",
+		"outputs": [
 			{
 				"internalType": "address",
-				"name": "ercaddress_",
+				"name": "",
 				"type": "address"
 			}
 		],
-		"name": "A11Smile_setErc",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -217,23 +217,12 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "spender",
+				"name": "ercaddress_",
 				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
 			}
 		],
-		"name": "approve",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
+		"name": "A11Smile_setErc",
+		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
@@ -241,163 +230,45 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "spender",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "subtractedValue",
-				"type": "uint256"
-			}
-		],
-		"name": "decreaseAllowance",
-		"outputs": [
-			{
-				"internalType": "bool",
 				"name": "",
-				"type": "bool"
+				"type": "address"
 			}
 		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "min",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "max",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "MedicalName",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_Medicalrecordrequirements",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_Requirementdescription",
-				"type": "string"
-			}
-		],
-		"name": "gainer_AddMedicalInformation",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
+		"name": "Adoctor",
+		"outputs": [
 			{
 				"internalType": "address",
 				"name": "soliciter",
 				"type": "address"
-			}
-		],
-		"name": "gainer_setDoctor",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from1",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to1",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "quantity1",
-				"type": "uint256"
-			}
-		],
-		"name": "gainer_transfer_AS",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_soliciter",
-				"type": "address"
 			},
 			{
 				"internalType": "string",
-				"name": "PictureRoute",
+				"name": "HospitalName",
 				"type": "string"
 			},
 			{
 				"internalType": "bool",
-				"name": "whether",
+				"name": "exist",
 				"type": "bool"
-			},
-			{
-				"internalType": "uint256",
-				"name": "ercnum_",
-				"type": "uint256"
 			}
 		],
-		"name": "gainer_whether",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "spender",
+				"internalType": "address payable",
+				"name": "AddEth",
 				"type": "address"
 			},
 			{
-				"internalType": "uint256",
-				"name": "addedValue",
-				"type": "uint256"
+				"internalType": "address payable",
+				"name": "RedEth",
+				"type": "address"
 			}
 		],
-		"name": "increaseAllowance",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "mint1",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "toContract",
+		"name": "EthGetAs",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -406,135 +277,93 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "to",
+				"name": "HospitalAddress",
 				"type": "address"
 			},
 			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "MedicalName",
+				"type": "string"
 			}
 		],
-		"name": "transfer",
+		"name": "SeeGainerMedicalInformations",
 		"outputs": [
 			{
-				"internalType": "bool",
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "min",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "max",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "Medicalrecordrequirements",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "Requirementdescription",
+						"type": "string"
+					}
+				],
+				"internalType": "struct UploadMedicalrecords_gainer.gainer_upMedicalInformation1",
 				"name": "",
-				"type": "bool"
+				"type": "tuple"
 			}
 		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "from",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "to",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "transferFrom",
-		"outputs": [
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
-			}
-		],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "Proute",
-				"type": "string"
-			},
-			{
-				"internalType": "address",
-				"name": "_soliciter",
-				"type": "address"
-			}
-		],
-		"name": "user_AddMedicalInformation",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "_user",
-				"type": "address"
-			}
-		],
-		"name": "user_Adduser",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "user_UPMedicalExaminationReport",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "url",
-				"type": "string"
-			}
-		],
-		"name": "user_UPMedicalinformation",
-		"outputs": [],
-		"stateMutability": "nonpayable",
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
 		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "A11Smile",
+		"name": "SeeGainerMedicalInformationsName",
 		"outputs": [
 			{
-				"internalType": "address",
+				"components": [
+					{
+						"internalType": "string",
+						"name": "MedicalName",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "min",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "max",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "addr",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "account",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "HospitalName",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "exit",
+						"type": "bool"
+					}
+				],
+				"internalType": "struct UploadMedicalrecords_gainer.gainer_upMedicalInformation[]",
 				"name": "",
-				"type": "address"
+				"type": "tuple[]"
 			}
 		],
 		"stateMutability": "view",
@@ -562,6 +391,30 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -597,6 +450,30 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "subtractedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "decreaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "examineTime",
 		"outputs": [
@@ -612,30 +489,97 @@
 	{
 		"inputs": [
 			{
-				"internalType": "address",
-				"name": "soliciter",
-				"type": "address"
+				"internalType": "string",
+				"name": "hospitalName_",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "min_",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "max_",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "account_",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "MedicalName_",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Medicalrecordrequirements",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_Requirementdescription",
+				"type": "string"
 			}
 		],
-		"name": "gainer_doctorsee",
+		"name": "gainer_AddMedicalInformation",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gainer_SeeOwnMedicalInformationed",
 		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			},
 			{
 				"internalType": "string[]",
 				"name": "",
 				"type": "string[]"
 			},
 			{
-				"internalType": "address",
+				"internalType": "uint256[]",
 				"name": "",
-				"type": "address"
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
 			}
 		],
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gainer_SeeOwnMedicalInformationing",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gainer_SeeuserUploadMedical",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -660,45 +604,42 @@
 	{
 		"inputs": [
 			{
+				"internalType": "address",
+				"name": "soliciter",
+				"type": "address"
+			},
+			{
 				"internalType": "string",
-				"name": "MedicalName",
+				"name": "HospitalName",
 				"type": "string"
 			}
 		],
-		"name": "gainer_SeeOwnMedicalInformation",
-		"outputs": [
+		"name": "gainer_setDoctor",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
 			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
+				"internalType": "address",
+				"name": "from1",
+				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "",
+				"name": "to1",
 				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "quantity1",
+				"type": "uint256"
 			}
 		],
-		"stateMutability": "view",
+		"name": "gainer_transfer_AS",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -728,6 +669,30 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "addedValue",
+				"type": "uint256"
+			}
+		],
+		"name": "increaseAllowance",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "lastUpdateTime",
 		"outputs": [
@@ -741,6 +706,19 @@
 		"type": "function"
 	},
 	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint1",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"name": "name",
 		"outputs": [
@@ -748,30 +726,6 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "PictureRoute",
-				"type": "string"
-			}
-		],
-		"name": "seeMedicaldata",
-		"outputs": [
-			{
-				"internalType": "string",
-				"name": "",
-				"type": "string"
-			},
-			{
-				"internalType": "bool",
-				"name": "",
-				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
@@ -801,6 +755,109 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userAmedicalInformation",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "Proute",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "_soliciter",
+				"type": "address"
+			}
+		],
+		"name": "user_AddMedicalInformation",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			}
+		],
+		"name": "user_Adduser",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -871,6 +928,60 @@
 		"type": "function"
 	},
 	{
+		"inputs": [],
+		"name": "user_SeeCertificateState",
+		"outputs": [
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "",
+				"type": "string[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "url",
+				"type": "string"
+			}
+		],
+		"name": "user_UPMedicalExaminationReport",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "url",
+				"type": "string"
+			}
+		],
+		"name": "user_UPMedicalinformation",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [
 			{
 				"internalType": "string",
@@ -903,24 +1014,6 @@
 				"internalType": "string",
 				"name": "",
 				"type": "string"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "user_ViewMedicalRecords",
-		"outputs": [
-			{
-				"internalType": "string[]",
-				"name": "",
-				"type": "string[]"
-			},
-			{
-				"internalType": "address",
-				"name": "soliciter",
-				"type": "address"
 			}
 		],
 		"stateMutability": "view",
