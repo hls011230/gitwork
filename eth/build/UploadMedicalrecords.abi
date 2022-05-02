@@ -277,6 +277,25 @@
 		"inputs": [
 			{
 				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "QueryUserSerialLength",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
 				"name": "HospitalAddress",
 				"type": "address"
 			},
@@ -364,6 +383,104 @@
 				"internalType": "struct UploadMedicalrecords_gainer.gainer_upMedicalInformation[]",
 				"name": "",
 				"type": "tuple[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string[]",
+				"name": "_m1",
+				"type": "string[]"
+			},
+			{
+				"internalType": "string[]",
+				"name": "_m2",
+				"type": "string[]"
+			}
+		],
+		"name": "SetCertificate",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "UserSerial",
+		"outputs": [
+			{
+				"internalType": "bytes32",
+				"name": "",
+				"type": "bytes32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_user",
+				"type": "address"
+			},
+			{
+				"internalType": "bytes32",
+				"name": "_num",
+				"type": "bytes32"
+			}
+		],
+		"name": "ViewUserCertificate",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "time",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "blockNum",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "serial",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "string[]",
+						"name": "m1",
+						"type": "string[]"
+					},
+					{
+						"internalType": "string[]",
+						"name": "m2",
+						"type": "string[]"
+					}
+				],
+				"internalType": "struct UploadMedicalrecords_gainer.certificate",
+				"name": "",
+				"type": "tuple"
 			}
 		],
 		"stateMutability": "view",

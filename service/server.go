@@ -74,6 +74,15 @@ func Start() {
 
 		// 用户详情界面展示
 		user.POST("/showDetailsPage", user_showDetailsPageHandler)
+
+		// 用户生成证书
+		user.POST("/createCertificate", CreateCertificateHandler)
+
+		// 用书证书展示
+		user.POST("/showAllCertificate", ShowAllCertificateHandler)
+
+		// 用户证书详情
+		user.POST("/showDetailsCertificate", ShowDetailsCertificateHandler)
 	}
 
 	// 征求者
