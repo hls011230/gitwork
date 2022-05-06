@@ -33,6 +33,15 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	// 上传用户的病历信息
 	token, _ := v1.GetToken()
 	srcFile, _ := f.Open()
+
+	// 识别用户上传的信息是否真实
+	err = v1.PostMedicalInformation(srcFile, token, uid)
+	if err != nil {
+		serializer.RespError(c, err.Error())
+		return
+	}
+
+	// 上传病历
 	err = v1.UploadMedicalHistory(srcFile, token, uid, fileName)
 	if err != nil {
 		serializer.RespError(c, err)
@@ -63,6 +72,15 @@ func user_uploadMedicalExaminationReportHandler(c *gin.Context) {
 	// 上传用户的体检报告信息
 	token, _ := v1.GetToken()
 	srcFile, _ := f.Open()
+
+	// 识别用户上传的信息是否真实
+	err = v1.PostMedicalInformation(srcFile, token, uid)
+	if err != nil {
+		serializer.RespError(c, err.Error())
+		return
+	}
+
+	// 上传体检报告
 	err = v1.UploadMedicalExaminationReport(srcFile, token, uid, fileName)
 	if err != nil {
 		serializer.RespError(c, err)

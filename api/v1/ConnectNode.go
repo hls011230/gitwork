@@ -17,44 +17,45 @@ import (
 	"math/big"
 )
 
-//用户上传医疗信息
-func Connect2_UploadMedicalInformation(user *model.User_solidity, uid int) error {
-	cliadd := db.Get()
-	var add string
-	cliadd.Select("select private_key from user where id = ? ", uid).Find(&add)
-	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(add))
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	clipk := db.Get()
-	var pk string
-	clipk.Select("select address from user where id = ? ", uid).Find(&pk)
-
-	privateKey, err := crypto.HexToECDSA(pk)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	auth.GasPrice = eth.GasPrice
-	auth.GasLimit = uint64(6000000)
-	auth.Nonce = big.NewInt(int64(nonce))
-
-	_, err = eth.Ins.UserAddMedicalInformation(auth, user.Proute, common.HexToAddress(user.Soliciter_))
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-	return nil
-}
+//征求者发布医疗信息
+//func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity,gid int) error {
+//	cliadd :=db.Get()
+//	var addr string
+//	cliadd.Select("select private_key from user where id = ? ",gid).Find(&addr)
+//	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
+//	if err != nil {
+//		log.Fatal(err)
+//		return err
+//	}
+//
+//	clipk :=db.Get()
+//	var pk string
+//	clipk.Select("select address from user where id = ? ",gid).Find(&pk)
+//
+//	privateKey, err := crypto.HexToECDSA(pk)
+//	if err != nil {
+//		log.Fatal(err)
+//		return err
+//	}
+//
+//	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
+//	if err != nil {
+//		log.Fatal(err)
+//		return err
+//	}
+//
+//	auth.GasPrice = eth.GasPrice
+//	auth.GasLimit = uint64(6000000)
+//	auth.Nonce = big.NewInt(int64(nonce))
+//
+//
+//	_, err = eth.Ins.GainerAddMedicalInformation(auth, big.NewInt(gainer.Min_),big.NewInt(gainer.Max), gainer.MedicalName,gainer.MedicalNeed,gainer.RequirementDescription)
+//	if err != nil {
+//		log.Fatal(err)
+//		return err
+//	}
+//	return err
+//}
 
 //查询ETH
 func Connect5_CheckTheBalance(id, genre int) (string, error) {

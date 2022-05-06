@@ -17,7 +17,7 @@ var (
 	Client   *ethclient.Client
 )
 
-func Init(contract_address string) error {
+func Init(contract_address []string) error {
 	client, err := ethclient.Dial("http://47.106.124.34:8545")
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func Init(contract_address string) error {
 	ChainID = chainID
 
 	// 连接合约
-	cAddr := common.HexToAddress(contract_address)
+	cAddr := common.HexToAddress(contract_address[0])
 
 	// 创建合约实例
 	ins, err := gen.NewGen(cAddr, client)

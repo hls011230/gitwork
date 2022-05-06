@@ -61,7 +61,7 @@ func user_readMedicalInformation(c *gin.Context) {
 	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 	err = v1.PostMedicalInformation(srcFile, token, uid)
 	if err != nil {
-		serializer.RespError(c, err)
+		serializer.RespError(c, err.Error())
 		return
 	}
 

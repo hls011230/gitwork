@@ -67,7 +67,6 @@ func Start() {
 		user.POST("/editUserResume", user_editUserResumeHandler)
 
 		user.POST("/readMedicalInformation", user_readMedicalInformation)
-		user.POST("/UploadMedicalInformation", user_UploadMedicalInformation)
 
 		// 用户首页展示
 		user.POST("/userDisplayHomepage", user_displayHomepageHandler)
@@ -75,14 +74,24 @@ func Start() {
 		// 用户详情界面展示
 		user.POST("/showDetailsPage", user_showDetailsPageHandler)
 
+		//用户上传证书
+		user.POST("/SubmitCertificate", user_submitCertificateHandler)
+
 		// 用户生成证书
 		user.POST("/createCertificate", CreateCertificateHandler)
 
-		// 用书证书展示
+		// 用户查询证书
 		user.POST("/showAllCertificate", ShowAllCertificateHandler)
 
-		// 用户证书详情
+		// 用户查看证书详情
 		user.POST("/showDetailsCertificate", ShowDetailsCertificateHandler)
+
+		//用户已经完成交易展示
+		user.POST("/AllTransactions", user_showAllTransactionsHandler)
+
+		//用户未交易完成展示
+		user.POST("/NoTransactions", user_showNoTransactionsHandler)
+
 	}
 
 	// 征求者
@@ -100,12 +109,8 @@ func Start() {
 		// 征求者登录
 		gainer.POST("/login", gainer_loginHandler)
 
-		//gainer.POST("/uploadGainer", gainer_uploadGainer)
-
 		// 征求者发布征求信息
 		gainer.POST("/ReleaseMedicalInformation", gainer_ReleaseMedicalInformation)
-
-		//gainer.POST("/ReviewAndReward", gainer_ReviewAndReward)
 
 		// 查看征求者ETH余额
 		gainer.POST("/CheckTheBalance", gainer_CheckTheBalance)
@@ -127,6 +132,12 @@ func Start() {
 
 		// 征求者头像展示
 		gainer.POST("/showGainerIcon", gainer_showGainerIconHandler)
+
+		//征求者审核功能
+		gainer.POST("/Examine", gainer_ExamineHander)
+
+		//征求者查看用户上传的证书
+		gainer.POST("/ViewCertificate", gainer_ViewCertificateHandler)
 
 	}
 

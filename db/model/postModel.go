@@ -22,3 +22,17 @@ type PostCertificate struct {
 type PostCertificateHash struct {
 	Serial string `json:"serial"`
 }
+
+type PostExamine struct {
+	Certificate string `json:"certificate"`
+	MedicalName string `json:"medical_name"`
+	Whether     bool   `json :"whether"`
+	Address     string `json:"address"`
+	Ercnum      int64  `json:"ercnum"`
+}
+
+type PostSubmitCertificate struct {
+	Certificate string `json:"certificate_"`
+	Soliciter   string `json:"soliciter_"`
+	MedicalName string `json:"medical_name_"`
+}
