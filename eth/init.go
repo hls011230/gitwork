@@ -14,6 +14,7 @@ var (
 	GasPrice *big.Int
 	ChainID  *big.Int
 	Ins      *gen.Gen
+	AS       *gen.AS
 	Client   *ethclient.Client
 )
 
@@ -43,14 +44,19 @@ func Init(contract_address []string) error {
 
 	// 连接合约
 	cAddr := common.HexToAddress(contract_address[0])
-
-	// 创建合约实例
-	ins, err := gen.NewGen(cAddr, client)
+	ins, err := gen.NewGen(cAddr, client) // 创建合约实例
 	if err != nil {
 		return err
 	}
-
 	Ins = ins
+
+	//
+	cAddr = common.HexToAddress(contract_address[1])
+	as, err := gen.NewAS(cAddr, client)
+	if err != nil {
+		return err
+	}
+	AS = as
 
 	return nil
 

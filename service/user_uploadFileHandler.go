@@ -42,6 +42,7 @@ func user_uploadMedicalHistoryHandler(c *gin.Context) {
 	}
 
 	// 上传病历
+	token, _ = v1.GetToken()
 	err = v1.UploadMedicalHistory(srcFile, token, uid, fileName)
 	if err != nil {
 		serializer.RespError(c, err)
@@ -81,6 +82,7 @@ func user_uploadMedicalExaminationReportHandler(c *gin.Context) {
 	}
 
 	// 上传体检报告
+	token, _ = v1.GetToken()
 	err = v1.UploadMedicalExaminationReport(srcFile, token, uid, fileName)
 	if err != nil {
 		serializer.RespError(c, err)
