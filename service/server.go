@@ -39,6 +39,9 @@ func Start() {
 		// 查看用户AS余额
 		user.POST("/CheckTheAS", user_CheckTheAS)
 
+		// 上传认证用户真实信息
+		user.POST("/readMedicalInformation", user_readMedicalInformationHandler)
+
 		// 用户上传病历信息
 		user.POST("/uploadMedicalHistory", user_uploadMedicalHistoryHandler)
 
@@ -65,8 +68,6 @@ func Start() {
 
 		// 修改用户个人简介
 		user.POST("/editUserResume", user_editUserResumeHandler)
-
-		user.POST("/readMedicalInformation", user_readMedicalInformation)
 
 		// 用户首页展示
 		user.POST("/userDisplayHomepage", user_displayHomepageHandler)

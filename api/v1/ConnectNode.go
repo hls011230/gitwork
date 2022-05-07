@@ -6,56 +6,13 @@ import (
 	"A11Smile/eth"
 
 	"context"
-	"fmt"
-
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
-
 	"log"
 	"math"
 	"math/big"
-)
 
-//征求者发布医疗信息
-//func Connect3_ReleaseMedicalInformation(gainer *model.Soliciter_solidity,gid int) error {
-//	cliadd :=db.Get()
-//	var addr string
-//	cliadd.Select("select private_key from user where id = ? ",gid).Find(&addr)
-//	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
-//	if err != nil {
-//		log.Fatal(err)
-//		return err
-//	}
-//
-//	clipk :=db.Get()
-//	var pk string
-//	clipk.Select("select address from user where id = ? ",gid).Find(&pk)
-//
-//	privateKey, err := crypto.HexToECDSA(pk)
-//	if err != nil {
-//		log.Fatal(err)
-//		return err
-//	}
-//
-//	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
-//	if err != nil {
-//		log.Fatal(err)
-//		return err
-//	}
-//
-//	auth.GasPrice = eth.GasPrice
-//	auth.GasLimit = uint64(6000000)
-//	auth.Nonce = big.NewInt(int64(nonce))
-//
-//
-//	_, err = eth.Ins.GainerAddMedicalInformation(auth, big.NewInt(gainer.Min_),big.NewInt(gainer.Max), gainer.MedicalName,gainer.MedicalNeed,gainer.RequirementDescription)
-//	if err != nil {
-//		log.Fatal(err)
-//		return err
-//	}
-//	return err
-//}
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+)
 
 //查询ETH
 func Connect5_CheckTheBalance(id, genre int) (string, error) {
@@ -69,7 +26,7 @@ func Connect5_CheckTheBalance(id, genre int) (string, error) {
 		DB.Table("gainers").First(&w, "id = ?", id)
 	}
 
-	res, err := eth.AS.GetUserETH(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
+	res, err := eth.Ins.GetUserETH(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
 	if err != nil {
 		log.Fatal(err)
 		return "", err
@@ -92,7 +49,7 @@ func Connect6_CheckTheAS(id, genre int) (string, error) {
 		DB.Table("gainers").First(&w, "id = ?", id)
 	}
 
-	res, err := eth.AS.GetUserAS(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
+	res, err := eth.Ins.GetUserAS(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
 
 	if err != nil {
 		log.Fatal(err)
@@ -100,44 +57,4 @@ func Connect6_CheckTheAS(id, genre int) (string, error) {
 	}
 
 	return res.String(), nil
-}
-
-//征求者查询ETH
-func Connect5_GainCheckTheBalance(gid int) error {
-	cliadd := db.Get()
-	var addr string
-	cliadd.Select("select private_key from user where id = ? ", gid).Find(&addr)
-	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(addr))
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	clipk := db.Get()
-	var pk string
-	clipk.Select("select address from user where id = ? ", gid).Find(&pk)
-
-	privateKey, err := crypto.HexToECDSA(pk)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-
-	auth.GasPrice = eth.GasPrice
-	auth.GasLimit = uint64(6000000)
-	auth.Nonce = big.NewInt(int64(nonce))
-
-	ETH, err := eth.Ins.GetUserETH(nil)
-	fmt.Println("剩余ETH", ETH)
-	if err != nil {
-		log.Fatal(err)
-		return err
-	}
-	return err
 }

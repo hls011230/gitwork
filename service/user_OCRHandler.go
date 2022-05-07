@@ -40,7 +40,7 @@ func user_verifyIDCardHandler(c *gin.Context) {
 	serializer.RespOK(c, "认证成功")
 }
 
-func user_readMedicalInformation(c *gin.Context) {
+func user_readMedicalInformationHandler(c *gin.Context) {
 	// 获取前端传递过来的文件
 	f, err := c.FormFile("readMedicalInformation")
 	if err != nil {
