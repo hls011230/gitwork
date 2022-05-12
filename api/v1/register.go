@@ -43,9 +43,9 @@ func UserRegister(user *model.User) error {
 func GainerRegister(gainer *model.Gainer) error {
 	DB := db.Get()
 	var name string
-	DB.Raw("select enterprise_name from gainer_authentication where id = ?", gainer.Gid).Find(&name)
+	DB.Raw("select enterprise_name from gainer_authentication where id = ?",gainer.Gid).Find(&name)
 	addr, pk, _ := createAccount()
-	err := addGainerIntoNode(addr, name)
+	err := addGainerIntoNode(addr,name)
 	if err != nil {
 		return err
 	}
@@ -62,6 +62,7 @@ func GainerRegister(gainer *model.Gainer) error {
 
 	gainer.BlockAddress = addr
 	gainer.PrivateKey = pk
+
 
 	DB.Table("gainers").Save(gainer)
 
@@ -156,7 +157,7 @@ func sendUserETH(addr string) error {
 }
 
 // 在合约中添加征求者
-func addGainerIntoNode(addr string, name string) error {
+func addGainerIntoNode(addr string,name string) error {
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(model.Deployer.Address))
 	if err != nil {
 		log.Fatal(err)
@@ -179,7 +180,7 @@ func addGainerIntoNode(addr string, name string) error {
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-	_, err = eth.Ins.GainerSetDoctor(auth, common.HexToAddress(addr), name)
+	_, err = eth.Ins.GainerSetDoctor(auth, common.HexToAddress(addr),name)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -201,7 +202,7 @@ func sendGainerAS(addr string) error {
 	}
 
 	amount := big.NewInt(int64(1000))
-	_, err = eth.AS.Transfer(auth, common.HexToAddress(addr), amount)
+	_, err = eth.AS.Transfer(auth, common.HexToAddress(addr),amount)
 	if err != nil {
 		log.Fatal(err)
 		return err

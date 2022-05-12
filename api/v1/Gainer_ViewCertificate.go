@@ -6,41 +6,40 @@ import (
 	"A11Smile/eth"
 	"context"
 	"fmt"
-	"math/big"
-
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
+	"math/big"
 )
 
-func Gainer_ViewCertificate(gid int) ([]interface{}, error) {
+func Gainer_ViewCertificate(gid int)([]interface{}, error)  {
 	DB := db.Get()
 	var w model.Wallet
-	DB.Table("gainers").First(&w, "id = ?", gid)
-	res, err := eth.Ins.GainerSeeuserUploadMedical(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
+	DB.Table("gainers").First(&w,"id = ?",gid)
+	res,err :=eth.Ins.GainerSeeuserUploadMedical(&bind.CallOpts{Context: context.Background(),From: common.HexToAddress(w.BlockAddress)})
 	var r []interface{}
 	for _, v := range res {
 		if v.MedicalName != "" {
 
-			r1 := struct {
+			r1 := struct{
 				User         common.Address
 				State        bool
 				Soliciter    common.Address
 				HospitalName string
 				MedicalName  string
 				Certificate  string
-				Erum         *big.Int
+				Amount         *big.Int
 			}{
-				User:         v.User,
-				State:        v.State,
-				Soliciter:    v.Soliciter,
+				User: v.User,
+				Soliciter: v.Soliciter,
 				HospitalName: v.HospitalName,
-				MedicalName:  v.MedicalName,
-				Certificate:  fmt.Sprintf("0x%x", v.Certificate),
-				Erum:         v.Erum,
+				MedicalName: v.MedicalName,
+				Certificate: fmt.Sprintf("0x%x",v.Certificate),
+				Amount: v.Amount,
 			}
 			r = append(r, r1)
 		}
 	}
 	return r, err
+
 
 }

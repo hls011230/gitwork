@@ -49,6 +49,8 @@ func PostIDCard(f io.Reader, token model.RespWXToken, uid int) error {
 	Front_IDCard := model.RespWXIDOCRF{}
 	var UserAuthentication model.UserAuthentication
 
+
+
 	err = json.NewDecoder(res.Body).Decode(&Front_IDCard)
 	if err != nil {
 		fmt.Println("数据绑定失败:", err)

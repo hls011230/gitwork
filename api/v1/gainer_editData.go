@@ -22,27 +22,28 @@ func GainerEditData(gid int, resume string) (err error) {
 }
 
 // 查询企业信息
-func GainerAuthenticationSee(id int) interface{} {
+func GainerAuthenticationSee(id int) interface{}{
 	gainer := struct {
 		EnterpriseName string `json:"enterprise_name"`
 		Block_address  string `json:"block_address"`
 		Resume         string `json:"resume"`
 	}{}
 	DB := db.Get()
-	DB.Table("gainers").Select("gainer_authentication.enterprise_name,gainers.block_address,gainers.resume").Joins("left join gainer_authentication on gainer_authentication.id = gainers.gid where gainers.id = ?", id).Scan(&gainer)
+	DB.Table("gainers").Select("gainer_authentication.enterprise_name,gainers.block_address,gainers.resume").Joins("left join gainer_authentication on gainer_authentication.id = gainers.gid where gainers.id = ?",id).Scan(&gainer)
 
 	return gainer
 }
 
+
 // 更换征求者头像
-func EditGainerIcon(gid int, srcFile io.Reader) error {
+func EditGainerIcon(gid int , srcFile io.Reader) error {
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("gainers").First(&user, "id = ?", gid)
+	DB.Table("gainers").First(&user,"id = ?" , gid)
 
 	// 获取文件上传地址
 	fileName := time.Now().Unix()
-	path := fmt.Sprintf("a11smile/gainers/%v/Image/%v.jpg", user.BlockAddress, fileName)
+	path := fmt.Sprintf("a11smile/gainers/%v/Image/%v.jpg",user.BlockAddress,fileName)
 	myReq := struct {
 		Env  string `json:"env"`
 		Path string `json:"path"`
@@ -53,7 +54,7 @@ func EditGainerIcon(gid int, srcFile io.Reader) error {
 
 	reqByte, err := json.Marshal(myReq)
 
-	token, _ := GetToken()
+	token,_ := GetToken()
 	u := "https://api.weixin.qq.com/tcb/uploadfile?access_token=%s"
 
 	req, err := http.NewRequest("POST", fmt.Sprintf(u, token.Access_token), bytes.NewReader(reqByte))
@@ -82,7 +83,7 @@ func EditGainerIcon(gid int, srcFile io.Reader) error {
 		return err
 	}
 
-	DB.Exec("update gainers set img_url = ? where id = ?", respUploadLink.FileId, gid)
+	DB.Exec("update gainers set img_url = ? where id = ?",respUploadLink.FileId,gid)
 
 	// 上传文件
 	myUploadReq := struct {
@@ -104,6 +105,7 @@ func EditGainerIcon(gid int, srcFile io.Reader) error {
 	w := multipart.NewWriter(buf)
 	content_type := w.FormDataContentType()
 
+
 	_ = w.WriteField("key", myUploadReq.Key)
 	_ = w.WriteField("Signature", myUploadReq.Signature)
 	_ = w.WriteField("x-cos-security_token", myUploadReq.XCosSecurityToken)
@@ -124,29 +126,30 @@ func EditGainerIcon(gid int, srcFile io.Reader) error {
 	req.Header.Set("Content-Type", content_type)
 	resp, _ = http.DefaultClient.Do(req)
 
+
 	return nil
 }
 
-func ShowGainerIcon(gid int) (string, error) {
+func ShowGainerIcon(gid int) (string,error) {
 	// 获取对象钱包
 	var user model.Wallet
 	DB := db.Get()
-	DB.Table("gainers").First(&user, "id = ?", gid)
+	DB.Table("gainers").First(&user,"id = ?",gid)
 
 	// 查询指定病历文件的云地址
 	var fileCloudPath string
-	DB.Raw("select img_url from gainers where id = ?", gid).Find(&fileCloudPath)
+	DB.Raw("select img_url from gainers where id = ?",gid).Find(&fileCloudPath)
 
 	// 根据云地址获取下载地址
-	token, _ := GetToken()
-	cloudFile := model.UserCloudLink{FileId: fileCloudPath, MaxAge: 720}
+	token,_ := GetToken()
+	cloudFile := model.UserCloudLink{FileId: fileCloudPath,MaxAge: 720}
 	fileList := []model.UserCloudLink{cloudFile}
 
 	myReq := struct {
-		Env      string                `json:"env"`
+		Env  string `json:"env"`
 		FileList []model.UserCloudLink `json:"file_list"`
 	}{
-		Env:      "prod-9gy59jvo10e0946b",
+		Env:  "prod-9gy59jvo10e0946b",
 		FileList: fileList,
 	}
 
@@ -155,7 +158,7 @@ func ShowGainerIcon(gid int) (string, error) {
 	url := "https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=%s"
 	req, err := http.NewRequest("POST", fmt.Sprintf(url, token.Access_token), bytes.NewReader(reqByte))
 	if err != nil {
-		return "", err
+		return "",err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -165,8 +168,9 @@ func ShowGainerIcon(gid int) (string, error) {
 	var respWXLoadLink model.RespWXLoadLink
 	err = json.NewDecoder(resp.Body).Decode(&respWXLoadLink)
 	if err != nil {
-		return "", err
+		return "",err
 	}
+
 
 	return respWXLoadLink.FileList[0].DownloadUrl, nil
 }

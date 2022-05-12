@@ -13,11 +13,12 @@ import (
 	"strings"
 )
 
+
 func PostMedicalInformation(f io.Reader, token model.RespWXToken, uid int) error {
 
 	DB := db.Get()
 	var name string
-	DB.Table("users").Select("user_authentication.name").Joins("left join user_authentication on user_authentication.uid = users.id where users.id = ?", uid).Scan(&name)
+	DB.Table("users").Select("user_authentication.name").Joins("left join user_authentication on user_authentication.uid = users.id where users.id = ?",uid).Scan(&name)
 
 	if name == "" {
 		return errors.New("请先进行实名认证")
@@ -33,6 +34,7 @@ func PostMedicalInformation(f io.Reader, token model.RespWXToken, uid int) error
 		fmt.Println("创建form文件失败:", err1)
 		return err1
 	}
+
 
 	_, err := io.Copy(formFile, f)
 	if err != nil {

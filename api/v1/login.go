@@ -12,6 +12,7 @@ func UserLogin(user *model.LoginUser) int {
 	return UserId
 }
 
+
 func GainerLogin(user *model.LoginUser) int {
 	cli := db.Get()
 	var UserId int

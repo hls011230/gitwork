@@ -29,7 +29,7 @@ func gainer_register_verifyBizlicenseHandler(c *gin.Context) {
 	//识别营业执照
 	token, _ := v1.GetToken()
 	srcFile, _ := f.Open()
-	name, err := v1.PostBizlicense(srcFile, token)
+	name,err := v1.PostBizlicense(srcFile, token)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
@@ -42,17 +42,17 @@ func gainer_registerHandler(c *gin.Context) {
 
 	gainer := model.Gainer{}
 	if err := c.ShouldBindJSON(&gainer); err != nil {
-		serializer.RespError(c, err)
+		serializer.RespError(c,err)
 		return
 	}
 
-	gainer.Gid, _ = strconv.Atoi(c.Request.Header.Get("gid"))
+	gainer.Gid,_ = strconv.Atoi(c.Request.Header.Get("gid"))
 	err := v1.GainerRegister(&gainer)
 	if err != nil {
-		serializer.RespError(c, err)
+		serializer.RespError(c,err)
 		return
 	}
 
-	serializer.RespOK(c, "注册成功")
+	serializer.RespOK(c,"注册成功")
 
 }

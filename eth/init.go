@@ -42,15 +42,15 @@ func Init(contract_address []string) error {
 
 	ChainID = chainID
 
-	// 连接合约
+	// 连接主合约
 	cAddr := common.HexToAddress(contract_address[0])
-	ins, err := gen.NewGen(cAddr, client) // 创建合约实例
+	ins, err := gen.NewGen(cAddr, client)
 	if err != nil {
 		return err
 	}
 	Ins = ins
 
-	//
+	// 连接代币合约
 	cAddr = common.HexToAddress(contract_address[1])
 	as, err := gen.NewAS(cAddr, client)
 	if err != nil {

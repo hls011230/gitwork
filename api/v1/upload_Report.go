@@ -8,27 +8,26 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 	"io"
 	"io/ioutil"
 	"math/big"
 	"mime/multipart"
 	"net/http"
 	"time"
-
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, fileName string) error {
+func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int , fileName string) error {
 
 	// 获取用户的Address值
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("users").First(&user, "id = ?", uid)
+	DB.Table("users").First(&user,"id = ?",uid)
 
 	// 获取文件上传地址
-	path := fmt.Sprintf("a11smile/users/%v/MedicalHistory/%v.jpg", user.BlockAddress, fileName)
+	path := fmt.Sprintf("a11smile/users/%v/MedicalHistory/%v.jpg",user.BlockAddress,fileName)
 	myReq := struct {
 		Env  string `json:"env"`
 		Path string `json:"path"`
@@ -90,10 +89,11 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-	_, err = eth.Ins.UserUPMedicalinformation(auth, fileName, respUploadLink.FileId)
+	_, err = eth.Ins.UserUPMedicalinformation(auth,fileName,respUploadLink.FileId)
 	if err != nil {
 		return err
 	}
+
 
 	// 上传文件
 	myUploadReq := struct {
@@ -115,6 +115,7 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 	w := multipart.NewWriter(buf)
 	content_type := w.FormDataContentType()
 
+
 	_ = w.WriteField("key", myUploadReq.Key)
 	_ = w.WriteField("Signature", myUploadReq.Signature)
 	_ = w.WriteField("x-cos-security_token", myUploadReq.XCosSecurityToken)
@@ -135,6 +136,8 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 	req.Header.Set("Content-Type", content_type)
 	resp, _ = http.DefaultClient.Do(req)
 
+
+
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("get resp failed, err:%v\n", err)
@@ -146,15 +149,16 @@ func UploadMedicalHistory(srcFile io.Reader, token model.RespWXToken, uid int, f
 
 }
 
-func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, uid int, fileName string) error {
+
+func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, uid int , fileName string) error {
 
 	// 获取用户的Address值
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("users").First(&user, "id = ?", uid)
+	DB.Table("users").First(&user,"id = ?",uid)
 
 	// 获取文件上传地址
-	path := fmt.Sprintf("a11smile/users/%v/MedicalExaminationReport/%v.jpg", user.BlockAddress, fileName)
+	path := fmt.Sprintf("a11smile/users/%v/MedicalExaminationReport/%v.jpg",user.BlockAddress,fileName)
 	myReq := struct {
 		Env  string `json:"env"`
 		Path string `json:"path"`
@@ -211,10 +215,11 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-	_, err = eth.Ins.UserUPMedicalExaminationReport(auth, fileName, respUploadLink.FileId)
+	_, err = eth.Ins.UserUPMedicalExaminationReport(auth,fileName,respUploadLink.FileId)
 	if err != nil {
 		return err
 	}
+
 
 	// 上传文件
 	myUploadReq := struct {
@@ -237,6 +242,7 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 	w := multipart.NewWriter(buf)
 	content_type := w.FormDataContentType()
 
+
 	_ = w.WriteField("key", myUploadReq.Key)
 	_ = w.WriteField("Signature", myUploadReq.Signature)
 	_ = w.WriteField("x-cos-security-token", myUploadReq.XCosSecurityToken)
@@ -257,6 +263,8 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 	req.Header.Set("Content-Type", content_type)
 	resp, _ = http.DefaultClient.Do(req)
 
+
+
 	b, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("get resp failed, err:%v\n", err)
@@ -267,3 +275,5 @@ func UploadMedicalExaminationReport(srcFile io.Reader, token model.RespWXToken, 
 	return nil
 
 }
+
+

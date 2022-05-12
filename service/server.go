@@ -93,6 +93,9 @@ func Start() {
 		//用户未交易完成展示
 		user.POST("/NoTransactions", user_showNoTransactionsHandler)
 
+		//用户ETH换AS
+		user.POST("/UETHforAs", user_ETHforAsHandler)
+
 	}
 
 	// 征求者
@@ -139,6 +142,15 @@ func Start() {
 
 		//征求者查看用户上传的证书
 		gainer.POST("/ViewCertificate", gainer_ViewCertificateHandler)
+
+		//征求者ETH换AS
+		gainer.POST("/GETHforAs", gainer_ETHforAsHandler)
+
+		//展示仓库User
+		gainer.POST("DisplayWarehouseUser", gainer_DisplayWarehouseUserHandler)
+
+		//展示仓库内容
+		gainer.POST("DisplayWarehouse", gainer_DisplayWarehouseHandler)
 
 	}
 

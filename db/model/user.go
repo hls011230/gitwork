@@ -23,9 +23,10 @@ type UserAuthentication struct {
 
 // 登录用户模型
 type LoginUser struct {
-	Email  string `json:"email"`
+	Email    string `json:"email"`
 	Passwd string `json:"passwd"`
 }
+
 
 type Data struct {
 	Block_address string `json:"block_address"`
@@ -38,4 +39,5 @@ type Data struct {
 type Wallet struct {
 	BlockAddress string `json:"block_address" gorm:"column:block_address"`
 	PrivateKey   string `json:"private_key" gorm:"column:private_key"`
+
 }

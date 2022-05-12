@@ -3,16 +3,15 @@ package service
 import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/serializer"
-	"strconv"
-
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
-func user_CheckTheBalanceHandler(c *gin.Context) {
+func user_CheckTheBalanceHandler(c *gin.Context)  {
 
-	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
 
-	balance, err := v1.Connect5_CheckTheBalance(uid, 0)
+	balance,err := v1.Connect5_CheckTheBalance(uid,0)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
@@ -21,11 +20,13 @@ func user_CheckTheBalanceHandler(c *gin.Context) {
 	serializer.RespOK(c, balance)
 }
 
-func user_CheckTheAS(c *gin.Context) {
 
-	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 
-	balance, err := v1.Connect6_CheckTheAS(uid, 0)
+func user_CheckTheAS(c *gin.Context)  {
+
+	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
+
+	balance,err := v1.Connect6_CheckTheAS(uid,0)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
