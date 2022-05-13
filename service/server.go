@@ -152,9 +152,6 @@ func Start() {
 		//征求者ETH换AS
 		gainer.POST("/GETHforAs", gainer_ETHforAsHandler)
 
-		//征求者AS换ETH
-		gainer.POST("/GAsforETH", gainer_ASforETHHandler)
-
 		//展示征求者自己所发布的病历名称
 		gainer.POST("/viewMedicalName", gainer_ViewMedicalNameHandler)
 
