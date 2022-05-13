@@ -70,6 +70,7 @@ func DisplayHomepage()([]interface{},error) {
 			Account      *big.Int
 			Exit         bool
 			IconUrl  string
+			Department string
 		}{
 			MedicalName : v.MedicalName,
 			Min          :v.Min,
@@ -79,6 +80,7 @@ func DisplayHomepage()([]interface{},error) {
 			Account     :v.Account,
 			Exit         :v.Exit,
 			IconUrl: respWXLoadLink.FileList[0].DownloadUrl,
+			Department: v.Department,
 		}
 		res = append(res, r)
 	}
