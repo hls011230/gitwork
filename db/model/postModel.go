@@ -10,16 +10,15 @@ type PostUserFile struct {
 }
 
 type PostDetails struct {
-	Address string 	`json:"address"`
-	MedicalName string `json:"medical_name"`
+	Address      string `json:"address"`
+	MedicalName  string `json:"medical_name"`
 	HospitalName string `json:"hospital_name"`
 }
 
-
 type PostCertificate struct {
-	ArrayMedicalHistory []string `json:"array_medical_history"`
+	ArrayMedicalHistory           []string `json:"array_medical_history"`
 	ArrayMedicalExaminationReport []string `json:"array_medical_examination_report"`
-	CertificateName string `json:"certificate_name"`
+	CertificateName               string   `json:"certificate_name"`
 }
 
 type PostCertificateHash struct {
@@ -29,28 +28,30 @@ type PostCertificateHash struct {
 type PostExamine struct {
 	Certificate string `json:"certificate"`
 	MedicalName string `json:"medical_name"`
-	Whether bool `json :"whether"`
-	Address string `json:"address"`
-	Ercnum int64 `json:"ercnum"`
-	Der string `json:"der"`
+	Whether     bool   `json :"whether"`
+	Address     string `json:"address"`
+	Ercnum      int64  `json:"ercnum"`
+	Der         string `json:"der"`
 }
 
 type PostSubmitCertificate struct {
 	Certificate string `json:"certificate_"`
-	Soliciter   string  `json:"soliciter_"`
+	Soliciter   string `json:"soliciter_"`
 	MedicalName string `json:"medical_name_"`
-	Department string `json:"department"`
+	Department  string `json:"department"`
 }
 
-
-type  PostETHforAS struct {
-	AddETH string ` json:"addeth"`
-	RedETH string `json:"redeth"`
-	Quantity int `json:"quantity"`
+type PostETHforAS struct {
+	AddETH   string ` json:"addeth"`
+	RedETH   string `json:"redeth"`
+	Quantity int    `json:"quantity"`
 }
 
 type PostWarehouse struct {
 	Medical string `json:"medical"`
-	User string `json:"user"`
-	Soliciter string `json:"soliciter"`
+	User    string `json:"user"`
+}
+
+type POSTDepartment struct {
+	Department string `json:"department"`
 }

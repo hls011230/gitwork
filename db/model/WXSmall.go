@@ -66,17 +66,16 @@ type RespWXUploadLink struct {
 // 文件对象
 type UserCloudLink struct {
 	FileId string `json:"fileid"`
-	MaxAge int `json:"max_age"`
+	MaxAge int    `json:"max_age"`
 }
 
 type RespWXLoadLink struct {
-	ErrCode       int    `json:"errCode"` // 错误码
-	ErrMsg        string `json:"errMsg"`  // 错误信息
-	FileList   []UserLoadUrl `json:"file_list"`
+	ErrCode  int           `json:"errCode"` // 错误码
+	ErrMsg   string        `json:"errMsg"`  // 错误信息
+	FileList []UserLoadUrl `json:"file_list"`
 }
 
 type UserLoadUrl struct {
 	DownloadUrl string `json:"download_url"`
-	Status int `json:"status"`
+	Status      int    `json:"status"`
 }
-
