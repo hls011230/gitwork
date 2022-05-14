@@ -4,16 +4,21 @@ import (
 	"A11Smile/db"
 	"A11Smile/db/model"
 	"A11Smile/eth"
+	"A11Smile/eth/gen"
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/ethereum/go-ethereum/common"
 	"math/big"
 	"net/http"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
-func DisplayHomepage()([]interface{},error) {
-	r1,err := eth.Ins.SeeGainerMedicalInformationsName(nil)
+func DisplayHomepage() ([]interface{}, error) {
+	r1, err := eth.Ins.SeeGainerMedicalInformationsName(nil)
 	if err != nil {
 		return nil, err
 	}
@@ -22,24 +27,23 @@ func DisplayHomepage()([]interface{},error) {
 
 	for _, v := range r1 {
 
-
 		var gainer model.Gainer
-		DB.Table("gainers").First(&gainer,"block_address = ?",v.Addr.String())
+		DB.Table("gainers").First(&gainer, "block_address = ?", v.Addr.String())
 
 		// 查询指定病历文件的云地址
 		var fileCloudPath string
-		DB.Raw("select img_url from gainers where id = ?",gainer.Id).Find(&fileCloudPath)
+		DB.Raw("select img_url from gainers where id = ?", gainer.Id).Find(&fileCloudPath)
 
 		// 根据云地址获取下载地址
-		token,_ := GetToken()
-		cloudFile := model.UserCloudLink{FileId: fileCloudPath,MaxAge: 720}
+		token, _ := GetToken()
+		cloudFile := model.UserCloudLink{FileId: fileCloudPath, MaxAge: 720}
 		fileList := []model.UserCloudLink{cloudFile}
 
 		myReq := struct {
-			Env  string `json:"env"`
+			Env      string                `json:"env"`
 			FileList []model.UserCloudLink `json:"file_list"`
 		}{
-			Env:  "prod-9gy59jvo10e0946b",
+			Env:      "prod-9gy59jvo10e0946b",
 			FileList: fileList,
 		}
 
@@ -48,7 +52,7 @@ func DisplayHomepage()([]interface{},error) {
 		url := "https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=%s"
 		req, err := http.NewRequest("POST", fmt.Sprintf(url, token.Access_token), bytes.NewReader(reqByte))
 		if err != nil {
-			return res,err
+			return res, err
 		}
 
 		req.Header.Set("Content-Type", "application/json")
@@ -58,7 +62,7 @@ func DisplayHomepage()([]interface{},error) {
 		var respWXLoadLink model.RespWXLoadLink
 		err = json.NewDecoder(resp.Body).Decode(&respWXLoadLink)
 		if err != nil {
-			return res,err
+			return res, err
 		}
 
 		r := struct {
@@ -69,50 +73,49 @@ func DisplayHomepage()([]interface{},error) {
 			HospitalName string
 			Account      *big.Int
 			Exit         bool
-			IconUrl  string
-			Department string
+			IconUrl      string
+			Department   string
 		}{
-			MedicalName : v.MedicalName,
-			Min          :v.Min,
-			Max         :v.Max,
-			Addr        :v.Addr,
-			HospitalName :v.HospitalName,
-			Account     :v.Account,
-			Exit         :v.Exit,
-			IconUrl: respWXLoadLink.FileList[0].DownloadUrl,
-			Department: v.Department,
+			MedicalName:  v.MedicalName,
+			Min:          v.Min,
+			Max:          v.Max,
+			Addr:         v.Addr,
+			HospitalName: v.HospitalName,
+			Account:      v.Account,
+			Exit:         v.Exit,
+			IconUrl:      respWXLoadLink.FileList[0].DownloadUrl,
+			Department:   v.Department,
 		}
 		res = append(res, r)
 	}
 
-
-	return res,nil
+	return res, nil
 }
 
-func ShowDetailsPage(details model.PostDetails) (interface{},error) {
-	res,err := eth.Ins.SeeGainerMedicalInformations(nil,common.HexToAddress(details.Address),details.MedicalName)
+func ShowDetailsPage(details model.PostDetails) (interface{}, error) {
+	res, err := eth.Ins.SeeGainerMedicalInformations(nil, common.HexToAddress(details.Address), details.MedicalName)
 	if err != nil {
 		return res, err
 	}
 
 	DB := db.Get()
 	var gainer model.Gainer
-	DB.Table("gainers").First(&gainer,"block_address = ?",details.Address)
+	DB.Table("gainers").First(&gainer, "block_address = ?", details.Address)
 
 	// 查询指定病历文件的云地址
 	var fileCloudPath string
-	DB.Raw("select img_url from gainers where id = ?",gainer.Id).Find(&fileCloudPath)
+	DB.Raw("select img_url from gainers where id = ?", gainer.Id).Find(&fileCloudPath)
 
 	// 根据云地址获取下载地址
-	token,_ := GetToken()
-	cloudFile := model.UserCloudLink{FileId: fileCloudPath,MaxAge: 720}
+	token, _ := GetToken()
+	cloudFile := model.UserCloudLink{FileId: fileCloudPath, MaxAge: 720}
 	fileList := []model.UserCloudLink{cloudFile}
 
 	myReq := struct {
-		Env  string `json:"env"`
+		Env      string                `json:"env"`
 		FileList []model.UserCloudLink `json:"file_list"`
 	}{
-		Env:  "prod-9gy59jvo10e0946b",
+		Env:      "prod-9gy59jvo10e0946b",
 		FileList: fileList,
 	}
 
@@ -121,7 +124,7 @@ func ShowDetailsPage(details model.PostDetails) (interface{},error) {
 	url := "https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=%s"
 	req, err := http.NewRequest("POST", fmt.Sprintf(url, token.Access_token), bytes.NewReader(reqByte))
 	if err != nil {
-		return res,err
+		return res, err
 	}
 
 	req.Header.Set("Content-Type", "application/json")
@@ -131,7 +134,7 @@ func ShowDetailsPage(details model.PostDetails) (interface{},error) {
 	var respWXLoadLink model.RespWXLoadLink
 	err = json.NewDecoder(resp.Body).Decode(&respWXLoadLink)
 	if err != nil {
-		return res,err
+		return res, err
 	}
 
 	DetailsPage := struct {
@@ -139,24 +142,24 @@ func ShowDetailsPage(details model.PostDetails) (interface{},error) {
 		Max                       *big.Int
 		Medicalrecordrequirements string
 		Requirementdescription    string
-		Resume string
-		HospitalName string
-		IconUrl string
+		Resume                    string
+		HospitalName              string
+		IconUrl                   string
 	}{
-		Min: res.Min,
-		Max: res.Max,
+		Min:                       res.Min,
+		Max:                       res.Max,
 		Medicalrecordrequirements: res.Medicalrecordrequirements,
-		Requirementdescription: res.Requirementdescription,
-		Resume: gainer.Resume,
-		HospitalName: details.HospitalName,
-		IconUrl:respWXLoadLink.FileList[0].DownloadUrl,
+		Requirementdescription:    res.Requirementdescription,
+		Resume:                    gainer.Resume,
+		HospitalName:              details.HospitalName,
+		IconUrl:                   respWXLoadLink.FileList[0].DownloadUrl,
 	}
 
-	return DetailsPage,nil
+	return DetailsPage, nil
 }
 
-func ShowSortPage(sort string) ([]interface{},error) {
-	r1,err := eth.Ins.SeeGainerMedicalInformationsName(nil)
+func ShowSortPage(sort string) ([]interface{}, error) {
+	r1, err := eth.Ins.SeeGainerMedicalInformationsName(nil)
 	if err != nil {
 		return nil, err
 	}
@@ -166,22 +169,22 @@ func ShowSortPage(sort string) ([]interface{},error) {
 	for _, v := range r1 {
 		if v.Department == sort {
 			var gainer model.Gainer
-			DB.Table("gainers").First(&gainer,"block_address = ?",v.Addr.String())
+			DB.Table("gainers").First(&gainer, "block_address = ?", v.Addr.String())
 
 			// 查询指定病历文件的云地址
 			var fileCloudPath string
-			DB.Raw("select img_url from gainers where id = ?",gainer.Id).Find(&fileCloudPath)
+			DB.Raw("select img_url from gainers where id = ?", gainer.Id).Find(&fileCloudPath)
 
 			// 根据云地址获取下载地址
-			token,_ := GetToken()
-			cloudFile := model.UserCloudLink{FileId: fileCloudPath,MaxAge: 720}
+			token, _ := GetToken()
+			cloudFile := model.UserCloudLink{FileId: fileCloudPath, MaxAge: 720}
 			fileList := []model.UserCloudLink{cloudFile}
 
 			myReq := struct {
-				Env  string `json:"env"`
+				Env      string                `json:"env"`
 				FileList []model.UserCloudLink `json:"file_list"`
 			}{
-				Env:  "prod-9gy59jvo10e0946b",
+				Env:      "prod-9gy59jvo10e0946b",
 				FileList: fileList,
 			}
 
@@ -190,7 +193,7 @@ func ShowSortPage(sort string) ([]interface{},error) {
 			url := "https://api.weixin.qq.com/tcb/batchdownloadfile?access_token=%s"
 			req, err := http.NewRequest("POST", fmt.Sprintf(url, token.Access_token), bytes.NewReader(reqByte))
 			if err != nil {
-				return res,err
+				return res, err
 			}
 
 			req.Header.Set("Content-Type", "application/json")
@@ -200,7 +203,7 @@ func ShowSortPage(sort string) ([]interface{},error) {
 			var respWXLoadLink model.RespWXLoadLink
 			err = json.NewDecoder(resp.Body).Decode(&respWXLoadLink)
 			if err != nil {
-				return res,err
+				return res, err
 			}
 
 			r := struct {
@@ -211,23 +214,36 @@ func ShowSortPage(sort string) ([]interface{},error) {
 				HospitalName string
 				Account      *big.Int
 				Exit         bool
-				IconUrl  string
-				Department string
+				IconUrl      string
+				Department   string
 			}{
-				MedicalName : v.MedicalName,
-				Min          :v.Min,
-				Max         :v.Max,
-				Addr        :v.Addr,
-				HospitalName :v.HospitalName,
-				Account     :v.Account,
-				Exit         :v.Exit,
-				IconUrl: respWXLoadLink.FileList[0].DownloadUrl,
-				Department: v.Department,
+				MedicalName:  v.MedicalName,
+				Min:          v.Min,
+				Max:          v.Max,
+				Addr:         v.Addr,
+				HospitalName: v.HospitalName,
+				Account:      v.Account,
+				Exit:         v.Exit,
+				IconUrl:      respWXLoadLink.FileList[0].DownloadUrl,
+				Department:   v.Department,
 			}
 			res = append(res, r)
 		}
 	}
 
+	return res, nil
+}
 
-	return res,nil
+func DisplayGainerHomepage(gid int) ([]gen.UploadMedicalrecords_gainergainer_Solicit, error) {
+
+	DB := db.Get()
+	var w model.Wallet
+	DB.Table("gainers").First(&w, "id = ?", gid)
+
+	res, err := eth.Ins.GainerSeeOwnMedicalInformationing(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
+	if err != nil {
+
+	}
+
+	return res, nil
 }
