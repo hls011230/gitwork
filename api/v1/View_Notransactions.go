@@ -22,7 +22,7 @@ func ShowNoTransactionsHandler(id int) ([]interface{}, error) {
 	for _, v := range r1 {
 		if v.MedicalName != "" {
 			var g model.Gainer
-			DB.Table("gainers").First(&g, "block_address = ?", v.Soliciter)
+			DB.Table("gainers").First(&g, "block_address = ?", v.Soliciter.String())
 			r1 := struct {
 				User         common.Address
 				Soliciter    common.Address
