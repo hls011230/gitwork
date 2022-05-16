@@ -6,19 +6,20 @@ import (
 	"A11Smile/eth"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"math/big"
 	"strconv"
 	"time"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
 func CreateCertificate(uid int, meta model.PostCertificate) error {
 
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("users").First(&user,"id = ?",uid)
+	DB.Table("users").First(&user, "id = ?", uid)
 
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(user.BlockAddress))
 	if err != nil {
@@ -41,67 +42,35 @@ func CreateCertificate(uid int, meta model.PostCertificate) error {
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 
-	_, err = eth.Ins.SetCertificate(auth,meta.ArrayMedicalHistory,meta.ArrayMedicalExaminationReport,meta.CertificateName)
+	_, err = eth.Ins.SetCertificate(auth, meta.ArrayMedicalHistory, meta.ArrayMedicalExaminationReport, meta.CertificateName)
 	if err != nil {
 		return err
 	}
-
 
 	return nil
 }
 
-func ShowAllCertificate(uid int) (interface{},error) {
+func ShowAllCertificate(uid int) (interface{}, error) {
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("users").First(&user,"id = ?",uid)
+	DB.Table("users").First(&user, "id = ?", uid)
 
-	n, err := eth.Ins.QueryUserSerialLength(nil,common.HexToAddress(user.BlockAddress))
+	res, err := eth.Ins.AllUserSerialNames(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(user.BlockAddress)})
 	if err != nil {
-		return "",err
+		return nil, err
 	}
 
-	numStr := n.String()
-	num,_ := strconv.Atoi(numStr)
-
-	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(user.BlockAddress))
-	if err != nil {
-
-		return "",err
-	}
-
-	privateKey, err := crypto.HexToECDSA(user.PrivateKey)
-	if err != nil {
-
-		return "",err
-	}
-
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
-	if err != nil {
-		return "",err
-	}
-
-	auth.GasPrice = eth.GasPrice
-	auth.GasLimit = uint64(6000000)
-	auth.Nonce = big.NewInt(int64(nonce))
-
-	var arrayHash []string
-	for i := 0; i < num; i++ {
-		hash, err := eth.Ins.UserSerial(nil,common.HexToAddress(user.BlockAddress),big.NewInt(int64(i)))
-		if err != nil {
-			return "",err
-		}
-		arrayHash = append(arrayHash, fmt.Sprintf("0x%x",string(hash[:])))
-	}
-
-	return arrayHash,nil
+	return res, nil
 
 }
 
-func ShowDetailsCertificate(uid int,hash string) (interface{} , error){
+func ShowDetailsCertificate(uid int, n string) (interface{}, error) {
 	DB := db.Get()
 	var user model.Wallet
-	DB.Table("users").First(&user,"id = ?",uid)
-	r, err := eth.Ins.ViewUserCertificate(nil,common.HexToHash(hash))
+	DB.Table("users").First(&user, "id = ?", uid)
+	hash, err := eth.Ins.UserSerialName(nil, common.HexToAddress(user.BlockAddress), n)
+
+	r, err := eth.Ins.ViewUserCertificate(nil, hash)
 	if err != nil {
 		return "", err
 	}
@@ -126,6 +95,6 @@ func ShowDetailsCertificate(uid int,hash string) (interface{} , error){
 		BlockTime:                   fmt.Sprintf(tm.Format("2006-01-02 15:04:05")),
 	}
 
-	return res,nil
+	return res, nil
 
 }

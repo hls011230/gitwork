@@ -4,54 +4,55 @@ import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/db/model"
 	"A11Smile/serializer"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-func CreateCertificateHandler(c *gin.Context)  {
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
+func CreateCertificateHandler(c *gin.Context) {
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 	var pc model.PostCertificate
-	if err := c.ShouldBindJSON(&pc);err != nil {
-		serializer.RespError(c,err)
+	if err := c.ShouldBindJSON(&pc); err != nil {
+		serializer.RespError(c, err)
 		return
 	}
 
-	err := v1.CreateCertificate(uid,pc)
+	err := v1.CreateCertificate(uid, pc)
 	if err != nil {
-		serializer.RespError(c,err)
+		serializer.RespError(c, err)
 		return
 	}
 
-	serializer.RespOK(c,"证书生成成功")
+	serializer.RespOK(c, "证书生成成功")
 
 }
 
-func ShowAllCertificateHandler(c *gin.Context)  {
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
+func ShowAllCertificateHandler(c *gin.Context) {
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
 
-	res,err := v1.ShowAllCertificate(uid)
+	res, err := v1.ShowAllCertificate(uid)
 	if err != nil {
-		serializer.RespError(c,err)
+		serializer.RespError(c, err)
 		return
 	}
 
-	serializer.RespOK(c,res)
+	serializer.RespOK(c, res)
 
 }
 
-func ShowDetailsCertificateHandler(c *gin.Context)  {
-	uid,_ := strconv.Atoi(c.Request.Header.Get("uid"))
-	var serial model.PostCertificateHash
-	if err := c.ShouldBindJSON(&serial);err != nil {
-		serializer.RespError(c,err)
+func ShowDetailsCertificateHandler(c *gin.Context) {
+	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+	var n model.PostCertificateHash
+	if err := c.ShouldBindJSON(&n); err != nil {
+		serializer.RespError(c, err)
 		return
 	}
-	res,err := v1.ShowDetailsCertificate(uid,serial.Serial)
+	res, err := v1.ShowDetailsCertificate(uid, n.Serial)
 	if err != nil {
-		serializer.RespError(c,err)
+		serializer.RespError(c, err)
 		return
 	}
 
-	serializer.RespOK(c,res)
+	serializer.RespOK(c, res)
 
 }
