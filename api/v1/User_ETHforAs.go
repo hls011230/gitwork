@@ -6,18 +6,19 @@ import (
 	"A11Smile/eth"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"log"
 	"math/big"
 	"strconv"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func User_ETHforAs(uid int,gid int,as *model.PostETHforAS) error  {
+func User_ETHforAs(uid int, as *model.PostETHforAS) error {
 	DB := db.Get()
 	var w model.Wallet
-	DB.Table("users").First(&w,"id = ?",uid)
+	DB.Table("users").First(&w, "id = ?", uid)
 
 	// 在合约中存入用户病历信息
 	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(w.BlockAddress))
@@ -44,7 +45,6 @@ func User_ETHforAs(uid int,gid int,as *model.PostETHforAS) error  {
 		log.Println("float to bigInt failed!")
 	}
 
-
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
 	if err != nil {
 		return err
@@ -55,16 +55,13 @@ func User_ETHforAs(uid int,gid int,as *model.PostETHforAS) error  {
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = valueWei
 
-	var x model.Wallet
-	DB.Table("gainers").First(&w,"id = ?",gid)
-
-	noncex, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(x.BlockAddress))
+	noncex, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(model.Deployer.Address))
 	if err != nil {
 
 		return err
 	}
 
-	privateKeyx, err := crypto.HexToECDSA(x.PrivateKey)
+	privateKeyx, err := crypto.HexToECDSA(model.Deployer.PrivateKey)
 	if err != nil {
 
 		return err
@@ -75,18 +72,17 @@ func User_ETHforAs(uid int,gid int,as *model.PostETHforAS) error  {
 		return err
 	}
 
-
 	authx.GasPrice = eth.GasPrice
 	authx.GasLimit = uint64(6000000)
 	authx.Nonce = big.NewInt(int64(noncex))
 
-	_,err = eth.AS.EthGetAs(auth,common.HexToAddress(as.AddETH))
-	_,err = eth.AS.AsgetETH(authx,common.HexToAddress(as.RedETH),big.NewInt(int64(as.Quantity)))
-	if err!=nil{
+	_, err = eth.AS.Transfer(authx, common.HexToAddress(w.BlockAddress), big.NewInt(int64(2*as.Quantity)))
+
+	_, err = eth.AS.EthGetAs(auth, common.HexToAddress(model.Deployer.Address))
+	if err != nil {
 		return err
 	}
 
 	return err
 
 }
-

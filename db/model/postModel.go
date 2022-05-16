@@ -42,9 +42,7 @@ type PostSubmitCertificate struct {
 }
 
 type PostETHforAS struct {
-	AddETH   string ` json:"addeth"`
-	RedETH   string `json:"redeth"`
-	Quantity int    `json:"quantity"`
+	Quantity int `json:"quantity"`
 }
 
 type PostWarehouse struct {
