@@ -4,12 +4,12 @@ import (
 	v1 "A11Smile/api/v1"
 	"A11Smile/db/model"
 	"A11Smile/serializer"
-	"github.com/gin-gonic/gin"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-func gainer_ETHforAsHandler(c *gin.Context)  {
-	uid, _ := strconv.Atoi(c.Request.Header.Get("uid"))
+func gainer_ETHforAsHandler(c *gin.Context) {
 	gid, _ := strconv.Atoi(c.Request.Header.Get("gid"))
 	var EthForAs model.PostETHforAS
 	if err := c.ShouldBind(&EthForAs); err != nil {
@@ -17,11 +17,10 @@ func gainer_ETHforAsHandler(c *gin.Context)  {
 		return
 	}
 
-	err := v1.Ganiner_ETHforAs(uid,gid,&EthForAs)
+	err := v1.Ganiner_ETHforAs(gid, &EthForAs)
 	if err != nil {
 		serializer.RespError(c, err)
 		return
 	}
 	serializer.RespOK(c, "兑换成功")
 }
-

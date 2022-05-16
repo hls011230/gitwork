@@ -6,27 +6,26 @@ import (
 	"A11Smile/eth"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"log"
 	"math/big"
 	"strconv"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func Ganiner_ETHforAs(uid int,gid int,As *model.PostETHforAS) error  {
+func Ganiner_ETHforAs(gid int, As *model.PostETHforAS) error {
 	DB := db.Get()
-	var w model.Wallet
-	DB.Table("users").First(&w,"id = ?",uid)
 
 	// 在合约中存入用户病历信息
-	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(w.BlockAddress))
+	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(model.Deployer.Address))
 	if err != nil {
 
 		return err
 	}
 
-	privateKey, err := crypto.HexToECDSA(w.PrivateKey)
+	privateKey, err := crypto.HexToECDSA(model.Deployer.PrivateKey)
 	if err != nil {
 
 		return err
@@ -44,7 +43,6 @@ func Ganiner_ETHforAs(uid int,gid int,As *model.PostETHforAS) error  {
 		log.Println("float to bigInt failed!")
 	}
 
-
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, eth.ChainID)
 	if err != nil {
 		return err
@@ -53,10 +51,9 @@ func Ganiner_ETHforAs(uid int,gid int,As *model.PostETHforAS) error  {
 	auth.GasPrice = eth.GasPrice
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = valueWei
 
 	var x model.Wallet
-	DB.Table("gainers").First(&w,"id = ?",gid)
+	DB.Table("gainers").First(&x, "id = ?", gid)
 
 	noncex, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(x.BlockAddress))
 	if err != nil {
@@ -75,18 +72,17 @@ func Ganiner_ETHforAs(uid int,gid int,As *model.PostETHforAS) error  {
 		return err
 	}
 
-
 	authx.GasPrice = eth.GasPrice
 	authx.GasLimit = uint64(6000000)
 	authx.Nonce = big.NewInt(int64(noncex))
+	authx.Value = valueWei
 
-	_,err = eth.AS.EthGetAs(auth,common.HexToAddress(As.AddETH))
-	_,err = eth.AS.AsgetETH(authx,common.HexToAddress(As.RedETH),big.NewInt(int64(As.Quantity)))
-	if err!=nil{
+	_, err = eth.AS.EthGetAs(authx, common.HexToAddress(model.Deployer.Address))
+	_, err = eth.AS.Transfer(auth, common.HexToAddress(x.BlockAddress), big.NewInt(int64(As.Quantity*2)))
+	if err != nil {
 		return err
 	}
 
 	return err
 
 }
-

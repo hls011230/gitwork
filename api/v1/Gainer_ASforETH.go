@@ -6,18 +6,19 @@ import (
 	"A11Smile/eth"
 	"context"
 	"fmt"
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
-	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/crypto"
 	"log"
 	"math/big"
 	"strconv"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/crypto"
 )
 
-func Gainer_ASforETH(uid int,gid int,AsforEth *model.PostETHforAS)error  {
+func Gainer_ASforETH(uid int, gid int, AsforEth *model.PostETHforAS) error {
 	DB := db.Get()
 	var w model.Wallet
-	DB.Table("gainers").First(&w,"id = ?",gid)
+	DB.Table("gainers").First(&w, "id = ?", gid)
 
 	noncex, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(w.BlockAddress))
 	if err != nil {
@@ -36,21 +37,17 @@ func Gainer_ASforETH(uid int,gid int,AsforEth *model.PostETHforAS)error  {
 		return err
 	}
 
-
 	authx.GasPrice = eth.GasPrice
 	authx.GasLimit = uint64(6000000)
 	authx.Nonce = big.NewInt(int64(noncex))
 
-	var x model.Wallet
-	DB.Table("users").First(&w,"id = ?",uid)
-
-	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(x.BlockAddress))
+	nonce, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(model.Deployer.Address))
 	if err != nil {
 
 		return err
 	}
 
-	privateKey, err := crypto.HexToECDSA(x.PrivateKey)
+	privateKey, err := crypto.HexToECDSA(model.Deployer.PrivateKey)
 	if err != nil {
 
 		return err
@@ -73,18 +70,16 @@ func Gainer_ASforETH(uid int,gid int,AsforEth *model.PostETHforAS)error  {
 		return err
 	}
 
-
 	auth.GasPrice = eth.GasPrice
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
 	auth.Value = valueWei
 
-	_,err = eth.AS.AsgetETH(authx,common.HexToAddress(AsforEth.RedETH),big.NewInt(int64(AsforEth.Quantity)))
-	_,err = eth.AS.EthGetAs(auth,common.HexToAddress(AsforEth.AddETH))
-	if err!=nil{
+	_, err = eth.AS.AsgetETH(authx, common.HexToAddress(model.Deployer.Address), big.NewInt(int64(AsforEth.Quantity)))
+	_, err = eth.AS.EthGetAs(auth, common.HexToAddress(w.BlockAddress))
+	if err != nil {
 		return err
 	}
 
 	return err
 }
-
