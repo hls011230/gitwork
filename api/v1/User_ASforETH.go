@@ -5,6 +5,7 @@ import (
 	"A11Smile/db/model"
 	"A11Smile/eth"
 	"context"
+	"math"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -58,7 +59,8 @@ func User_ASforETH(uid int, AsforEth *model.PostETHforAS) error {
 	auth.GasPrice = eth.GasPrice
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(int64(AsforEth.Quantity / 2))
+	n := AsforEth.Quantity * 5 * int(math.Pow10(17))
+	auth.Value = big.NewInt(int64(n))
 
 	_, err = eth.AS.Transfer(authx, common.HexToAddress(model.Deployer.Address), big.NewInt(int64(AsforEth.Quantity)))
 	_, err = eth.AS.EthGetAs(auth, common.HexToAddress(w.BlockAddress))
