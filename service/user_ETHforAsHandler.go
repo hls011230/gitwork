@@ -19,7 +19,7 @@ func user_ETHforAsHandler(c *gin.Context) {
 
 	err := v1.User_ETHforAs(uid, &EthForAs)
 	if err != nil {
-		serializer.RespError(c, err)
+		serializer.RespError(c, err.Error())
 		return
 	}
 

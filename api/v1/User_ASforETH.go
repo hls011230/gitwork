@@ -58,7 +58,7 @@ func User_ASforETH(uid int, AsforEth *model.PostETHforAS) error {
 		return err
 	}
 
-	value := strconv.Itoa(AsforEth.Quantity)
+	value := strconv.Itoa(AsforEth.Quantity / 2)
 
 	valuef, err := strconv.ParseFloat(value, 64) //先转换为 float64
 
