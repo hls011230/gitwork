@@ -5,8 +5,10 @@ import (
 	"A11Smile/db/model"
 	"A11Smile/eth"
 	"context"
-	"math"
+	"fmt"
+	"log"
 	"math/big"
+	"strconv"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -56,13 +58,29 @@ func User_ASforETH(uid int, AsforEth *model.PostETHforAS) error {
 		return err
 	}
 
+	value := strconv.Itoa(AsforEth.Quantity)
+
+	valuef, err := strconv.ParseFloat(value, 64) //先转换为 float64
+
+	if err != nil {
+		log.Println("is not a.abi number")
+	}
+
+	valueWei, isOk := new(big.Int).SetString(fmt.Sprintf("%.0f", valuef*1000000000000000000), 10)
+
+	if !isOk {
+		log.Println("float to bigInt failed!")
+	}
+
 	auth.GasPrice = eth.GasPrice
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
-	n := AsforEth.Quantity * 5 * int(math.Pow10(17))
-	auth.Value = big.NewInt(int64(n))
+	auth.Value = valueWei
 
 	_, err = eth.AS.Transfer(authx, common.HexToAddress(model.Deployer.Address), big.NewInt(int64(AsforEth.Quantity)))
+	if err != nil {
+		return err
+	}
 	_, err = eth.AS.EthGetAs(auth, common.HexToAddress(w.BlockAddress))
 	if err != nil {
 		return err

@@ -5,7 +5,6 @@ import (
 	"A11Smile/db/model"
 	"A11Smile/eth"
 	"context"
-	"math"
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
@@ -39,7 +38,7 @@ func User_ETHforAs(uid int, as *model.PostETHforAS) error {
 	auth.GasPrice = eth.GasPrice
 	auth.GasLimit = uint64(6000000)
 	auth.Nonce = big.NewInt(int64(nonce))
-	auth.Value = big.NewInt(int64(as.Quantity * int(math.Pow10(18))))
+	auth.Value = big.NewInt(int64(as.Quantity * 1000000000000000000))
 
 	noncex, err := eth.Client.PendingNonceAt(context.Background(), common.HexToAddress(model.Deployer.Address))
 	if err != nil {

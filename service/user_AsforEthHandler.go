@@ -19,6 +19,7 @@ func user_AsforEthHandler(c *gin.Context) {
 	err := v1.User_ASforETH(uid, &ASfroETH)
 	if err != nil {
 		serializer.RespError(c, err)
+		return
 	}
 	serializer.RespOK(c, "兑换成功")
 }
