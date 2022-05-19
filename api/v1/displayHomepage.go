@@ -30,7 +30,6 @@ func DisplayHomepage() ([]interface{}, error) {
 		var gainer model.Gainer
 		DB.Table("gainers").First(&gainer, "block_address = ?", v.Addr.String())
 
-		// 查询指定病历文件的云地址
 		var fileCloudPath string
 		DB.Raw("select img_url from gainers where id = ?", gainer.Id).Find(&fileCloudPath)
 
