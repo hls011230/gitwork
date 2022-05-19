@@ -17,7 +17,7 @@ func main() {
 
 	// 初始化区块链(传入合约地址)
 
-	err = eth.Init([]string{"0x39828FCC24A3e2a131116da627F64EBF721C8e78", "0x3323001eD381A68BEc57f4f68391F3e074EEfD34"})
+	err = eth.Init([]string{"0xFFBf214564d6a90b95F3390afc0899B12862a580", "0x30c96a4A2180D3B39385cad5b28e68C065DB6d05"})
 
 	if err != nil {
 		panic(err)
