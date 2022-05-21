@@ -15,7 +15,7 @@ func user_queryBlockInformationHandler(c *gin.Context) {
 	num, _ := eth.Client.BlockNumber(context.Background())
 
 	var res []interface{}
-	for i := 10; i <= int(num); i++ {
+	for i := int(num); i >= int(num)-1000; i-- {
 		e, _ := eth.Client.BlockByNumber(context.Background(), big.NewInt(int64(i)))
 		if e.Transactions().Len() != 0 {
 			for _, v := range e.Transactions() {
