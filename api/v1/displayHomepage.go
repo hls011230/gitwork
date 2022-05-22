@@ -233,7 +233,7 @@ func ShowSortPage(sort string) ([]interface{}, error) {
 	return res, nil
 }
 
-func DisplayGainerHomepage(gid int) ([]gen.UploadMedicalrecords_gainergainer_Solicit, error) {
+func DisplayGainerHomepage(gid int) (a []gen.UploadMedicalrecords_gainergainer_Solicit, e error) {
 
 	DB := db.Get()
 	var w model.Wallet
@@ -241,8 +241,14 @@ func DisplayGainerHomepage(gid int) ([]gen.UploadMedicalrecords_gainergainer_Sol
 
 	res, err := eth.Ins.GainerSeeOwnMedicalInformationing(&bind.CallOpts{Context: context.Background(), From: common.HexToAddress(w.BlockAddress)})
 	if err != nil {
-
+		return nil, err
 	}
 
-	return res, nil
+	for _, v := range res {
+		if v.MedicalName != "" {
+			a = append(a, v)
+		}
+	}
+
+	return a, nil
 }
