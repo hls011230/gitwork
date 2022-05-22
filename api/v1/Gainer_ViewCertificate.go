@@ -7,6 +7,8 @@ import (
 	"context"
 	"fmt"
 	"math/big"
+	"strconv"
+	"time"
 
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
@@ -41,4 +43,33 @@ func Gainer_ViewCertificate(gid int, medicalName string) ([]interface{}, error) 
 	}
 	return r, err
 
+}
+
+func ShowUserCertificateDetails(serial string) (interface{}, error) {
+	r, err := eth.Ins.ViewUserCertificate(nil, common.HexToHash(serial))
+	if err != nil {
+		return "", err
+	}
+
+	t := r.Time.String()
+	t2, _ := strconv.Atoi(t)
+	tm := time.Unix(int64(t2), 0)
+
+	res := struct {
+		Address                     string `json:"address"`
+		MedicalHistoryNum           int    `json:"medical_history_num"`
+		MedicalExaminationReportNum int    `json:"medical_examination_report_num"`
+		BlockNum                    string `json:"block_num"`
+		Serial                      string `json:"serial"`
+		BlockTime                   string `json:"block_time"`
+	}{
+		Address:                     r.User.String(),
+		MedicalHistoryNum:           len(r.M1),
+		MedicalExaminationReportNum: len(r.M2),
+		BlockNum:                    r.BlockNum.String(),
+		Serial:                      fmt.Sprintf("0x%x", r.Serial),
+		BlockTime:                   fmt.Sprintf(tm.Format("2006-01-02 15:04:05")),
+	}
+
+	return res, nil
 }

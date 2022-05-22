@@ -152,6 +152,9 @@ func Start() {
 		//征求者查看用户上传的证书
 		gainer.POST("/ViewCertificate", gainer_ViewCertificateHandler)
 
+		//征求者查看用户证书详情
+		gainer.POST("/showUserCertificateDetail", gainer_ShowUserCertificateDetailsHandler)
+
 		//征求者ETH换AS
 		gainer.POST("/GETHforAs", gainer_ETHforAsHandler)
 
