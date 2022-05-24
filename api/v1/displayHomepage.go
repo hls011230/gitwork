@@ -29,6 +29,8 @@ func DisplayHomepage() ([]interface{}, error) {
 
 		var gainer model.Gainer
 		DB.Table("gainers").First(&gainer, "block_address = ?", v.Addr.String())
+		var g model.GainerAuthentication
+		DB.Table("gainer_authentication").First(&g, "id = ?", gainer.Gid)
 
 		var fileCloudPath string
 		DB.Raw("select img_url from gainers where id = ?", gainer.Id).Find(&fileCloudPath)
@@ -74,6 +76,7 @@ func DisplayHomepage() ([]interface{}, error) {
 			Exit         bool
 			IconUrl      string
 			Department   string
+			RealAddr     string
 		}{
 			MedicalName:  v.MedicalName,
 			Min:          v.Min,
@@ -84,6 +87,7 @@ func DisplayHomepage() ([]interface{}, error) {
 			Exit:         v.Exit,
 			IconUrl:      respWXLoadLink.FileList[0].DownloadUrl,
 			Department:   v.Department,
+			RealAddr:     g.Address,
 		}
 		res = append(res, r)
 	}
